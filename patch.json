@@ -1,0 +1,617 @@
+{
+	"tribeData": {
+		"aimo": {
+			"resourceModifier": {
+				"aquacrop": 0.5
+			},
+			"techOverrides": {
+				"sailing": "sailing2"
+			}
+		},
+		"aquarion": {
+			"resourceModifier": {
+				"aquacrop": 0.5
+			},
+			"techOverrides": {
+				"riding": "riding2",
+				"freespirit": "freespirit",
+				"chivalry": "spearing",
+				"sailing": "sailing2"
+			}
+		},
+		"bardur": {
+			"resourceModifier": {
+				"aquacrop": 0.5
+			},
+			"techOverrides": {
+				"sailing": "sailing2"
+			}
+		},
+		"elyrion": {
+			"resourceModifier": {
+				"aquacrop": 0.5
+			},
+			"techOverrides": {
+				"sailing": "sailing2"
+			}
+		},
+		"hoodrick": {
+			"resourceModifier": {
+				"aquacrop": 0.5
+			},
+			"techOverrides": {
+				"sailing": "sailing2"
+			}
+		},
+		"imperius": {
+			"resourceModifier": {
+				"aquacrop": 0.5
+			},
+			"techOverrides": {
+				"sailing": "sailing2"
+			}
+		},
+		"kickoo": {
+			"resourceModifier": {
+				"aquacrop": 0.5
+			},
+			"techOverrides": {
+				"sailing": "sailing2"
+			},
+			"startingTech": [
+				"basic",
+				"fishingsimple"
+			]
+		},
+		"luxidoor": {
+			"resourceModifier": {
+				"aquacrop": 0.5
+			},
+			"techOverrides": {
+				"sailing": "sailing2"
+			}
+		},
+		"oumaji": {
+			"resourceModifier": {
+				"aquacrop": 0.5
+			},
+			"techOverrides": {
+				"sailing": "sailing2"
+			}
+		},
+		"quetzali": {
+			"resourceModifier": {
+				"aquacrop": 0.5
+			},
+			"techOverrides": {
+				"sailing": "sailing2"
+			}
+		},
+		"vengir": {
+			"resourceModifier": {
+				"aquacrop": 0.5
+			},
+			"techOverrides": {
+				"sailing": "sailing2"
+			}
+		},
+		"xinxi": {
+			"resourceModifier": {
+				"aquacrop": 0.5
+			},
+			"techOverrides": {
+				"sailing": "sailing2"
+			}
+		},
+		"yadakk": {
+			"resourceModifier": {
+				"aquacrop": 0.5
+			},
+			"techOverrides": {
+				"sailing": "sailing2"
+			}
+		},
+		"zebasi": {
+			"resourceModifier": {
+				"aquacrop": 0.5
+			},
+			"techOverrides": {
+				"sailing": "sailing2"
+			}
+		},
+		"polaris": {
+			"resourceModifier": {
+				"aquacrop": 0.5
+			},
+			"techOverrides": {
+				"sailing": "frostwork",
+				"navigation": "polarwarfare",
+				"aquatism": "polarism",
+				"aquaculture" : "sledding"
+			}
+		},
+		"cymanti": {
+			"resourceModifier": {
+				"aquacrop": 0.5
+			},
+			"techOverrides": {
+				"construction": "recycling",
+				"chivalry": "shock",
+				"aquaculture": "aquaculture",
+				"sailing": "hydrology",
+				"navigation": "pescetism"
+			}
+		}
+	},
+	"techData": {
+		"basic": {
+			"techUnlocks": [
+				"organization",
+				"climbing",
+				"fishingsimple",
+				"hunting",
+				"freespirit"
+			]
+		},
+		"riding": {
+			"techUnlocks": [
+				"chivalry"
+			],
+			"cost": 2
+		},
+		"freespirit": {
+			"techUnlocks": [
+				"roads",
+				"shields"
+			],
+			"cost": 1
+		},
+		"organization": {
+			"techUnlocks": [
+				"farming",
+				"riding"
+			]
+		},
+		"meditation": {
+			"improvementUnlocks": [
+			],
+			"unitUnlocks": [
+				"mindbender"
+			]
+		},
+		"philosophy": {
+			"unitUnlocks": [
+			]
+		},
+		"aquatism": {
+			"improvementUnlocks": [
+			]
+		},
+		"spiritualism": {
+			"improvementUnlocks": [
+				"growforest"
+			]
+		},
+		"construction": {
+			"improvementUnlocks": [
+				"windmill",
+				"burnforest"
+			]
+		},
+		"navigation": {
+			"unitUnlocks": [
+				"bombership",
+				"rammership"
+			],
+			"improvementUnlocks": [
+				"customshouse"
+			],
+			"movementUnlocks": {
+				"ocean": 1
+			},
+			"cost": 3
+		},
+		"fishing": {
+			"improvementUnlocks": [
+				"fishing"
+			],
+			"movementUnlocks": {
+			}
+		},
+		"aquaculture": {
+			"techUnlocks": [
+				"aquatism"
+			],
+			"improvementUnlocks": [
+				"aquafarm"
+			],
+			"unitUnlocks": [
+			],
+			"cost": 2
+		},
+		"sailing2": {
+			"techUnlocks": [
+				"navigation"
+			],
+			"improvementUnlocks": [
+				"port"
+			],
+			"unitUnlocks": [
+				"scoutship"
+			],
+			"movementUnlocks": {
+				"water": 1
+			},
+			"cost": 2,
+			"idx": -1
+		},
+		"riding2": {
+			"techUnlocks": [
+				"spearing"
+			],
+			"cost": 2
+		},
+		"freediving": {
+			"techUnlocks": [
+				"roads",
+				"shields"
+			],
+			"improvementUnlocks": [
+				"temple"
+			],
+			"abilityUnlocks": [
+				"disband"
+			],
+			"movementUnlocks": {
+				"ocean": 0
+			},
+			"cost": 1
+		},
+		"spearing": {
+			"abilityUnlocks": [
+				"destroy"
+			],
+			"unitUnlocks": [
+				"tridention"
+			],
+			"movementUnlocks": {
+				"ocean": 1
+			},
+			"cost": 3
+		},
+		"sledding": {
+			"techUnlocks": [
+				"polarism"
+			],
+			"unitUnlocks": [
+				"battlesled"
+			],
+			"improvementUnlocks": [
+				"aquafarm"
+			],
+			"cost": 2
+		},
+		"frostwork": {
+			"techUnlocks": [
+				"navigation"
+			],
+			"unitUnlocks": [
+				"mooni"
+			],
+			"improvementUnlocks": [
+				"outpost"
+			],
+			"cost": 2
+		},
+		"polarwarfare": {
+			"improvementUnlocks": [
+			]
+		},
+		"polarism": {
+			"improvementUnlocks": [
+			]
+		},
+		"hydrology": {
+			"techUnlocks": [
+				"navigation"
+			]
+		},
+		"pescetism": {
+			"techUnlocks": [
+			],
+			"movementUnlocks": {
+				"water": 1,
+				"ocean": 1
+			}
+		}
+	},
+	"unitData": {
+		"mindbender": {
+			"health": 100,
+			"defence": 10,
+			"movement": 1,
+			"range": 1,
+			"attack": 0,
+			"cost": 5,
+			"unitAbilities": [
+				"heal",
+				"convert"
+			],
+			"weapon": 4,
+			"promotionLimit": 3
+		},
+		"scout": {
+			"unitAbilities": [
+				"dash",
+				"static"
+			]
+		},
+		"giant": {
+			"unitAbilities": [
+				"static"
+			]
+		},
+		"polytaur": {
+			"unitAbilities": [
+				"dash",
+				"fortify",
+				"independent",
+				"static"
+			]
+		},
+		"dragonegg": {
+			"unitAbilities": [
+				"grow",
+				"fortify",
+				"static"
+			]
+		},
+		"babydragon": {
+			"unitAbilities": [
+				"grow",
+				"dash",
+				"fly",
+				"escape",
+				"scout",
+				"static"
+			]
+		},
+		"firedragon": {
+			"unitAbilities": [
+				"dash",
+				"fly",
+				"splash",
+				"scout",
+				"static"
+			]
+		},
+		"crab": {
+			"unitAbilities": [
+				"escape",
+				"swim",
+				"static"
+			]
+		},
+		"gaami": {
+			"unitAbilities": [
+				"autofreeze",
+				"freezearea",
+				"static"
+			]
+		},
+		"centipede": {
+			"unitAbilities": [
+				"dash",
+				"eat",
+				"creep",
+				"static"
+			]
+		},
+		"segment": {
+			"unitAbilities": [
+				"independent",
+				"creep",
+				"explode",
+				"static"
+			]
+		},
+		"raychi": {
+			"unitAbilities": [
+				"dash",
+				"swim",
+				"navigate",
+				"explode",
+				"creep",
+				"static"
+			]
+		},
+		"shaman": {
+			"unitAbilities": [
+				"convert",
+				"boost",
+				"static"
+			]
+		},
+		"dagger": {
+			"unitAbilities": [
+				"dash",
+				"surprise",
+				"independent",
+				"static"
+			]
+		},
+		"cloak": {
+			"unitAbilities": [
+				"hide",
+				"creep",
+				"infiltrate",
+				"dash",
+				"scout",
+				"static"
+			],
+			"promotionLimit": 0
+		},
+		"cloak_boat": {
+			"unitAbilities": [
+				"carry",
+				"swim",
+				"hide",
+				"scout",
+				"infiltrate",
+				"dash",
+				"static"
+			]
+		},
+		"pirate": {
+			"unitAbilities": [
+				"dash",
+				"swim",
+				"carry",
+				"surprise",
+				"static"
+			]
+		},
+		"bombership": {
+			"unitAbilities": [
+				"carry",
+				"swim",
+				"splash",
+				"stiff",
+				"static"
+			]
+		},
+		"scoutship": {
+			"unitAbilities": [
+				"dash",
+				"carry",
+				"swim",
+				"scout",
+				"static"
+			]
+		},
+		"transportship": {
+			"unitAbilities": [
+				"carry",
+				"swim",
+				"static"
+			]
+		},
+		"rammership": {
+			"unitAbilities": [
+				"dash",
+				"swim",
+				"carry",
+				"static"
+			]
+		},
+		"juggernaut": {
+			"unitAbilities": [
+				"stiff",
+				"stomp",
+				"swim",
+				"carry",
+				"static"
+			]
+		}
+
+	},
+	"improvementData": {
+		"temple": {
+			"terrainRequirements": []
+		},
+		"burnforest": {
+			"cost": 5,
+			"terrainRequirements": [
+				{
+					"terrain": "field"
+				}
+			],
+			"creates": [
+				{
+					"resource": "crop"
+				}
+			],
+			"improvementAbilities": [
+				"consumed"
+			]
+		},
+		"customshouse": {
+			"hidden": false,
+			"cost": 10,
+			"work": 1,
+			"terrainRequirements": [
+				{
+					"terrain": "field"
+				}
+			],
+			"adjacencyRequirements": [
+				{
+					"improvement": "port"
+				}
+			],
+			"adjacencyImprovements": [
+				{
+					"improvement": "port"
+				}
+			],
+			"improvementAbilities": [
+				"limited"
+			],
+			"maxLevel": 8,
+			"idx": 4
+		},
+		"aquafarm": {
+			"idx": 49,
+			"cost": 5,
+			"terrainRequirements": [
+				{
+					"resource": "aquacrop"
+				}
+			],
+			"improvementAbilities": [
+				"consumed"
+			],
+			"maxLevel": 0,
+			"rewards": [
+				{
+					"population": 2
+				}
+			],
+			"shouldSuggestUnlock": true
+		}
+	},
+	"resourceData": {
+		"aquacrop": {
+			"idx": 9,
+			"resourceTerrainRequirements": [
+				"water"
+			]
+		}
+	},
+	"localizationData": {
+		"building_names_burnforest": [
+			"Sow Сrop"
+		],
+		"building_names_aquafarm": [
+			"Harvest Aquacrop"
+		],
+		"technology_names_shipping": [
+			"Shipping"
+		],
+		"technology_names_sailing2": [
+			"Sailing"
+		],
+		"unit_abilities_autoheal": [
+			"AUTO HEAL"
+		],
+		"unit_abilities_static": [
+			"STATIC"
+		],
+		"tooltip_ability_autoheal": [
+			"This unit heals surrounding allied units when moving."
+		],
+		"tooltip_ability_static": [
+			"This unit cannot become a veteran."
+		]
+	}
+}

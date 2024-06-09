@@ -1,12 +1,13 @@
 ﻿using HarmonyLib;
 
 namespace PolyPlus {
-    public class Patcher
+    public class PolyPlusPatcher
     {
         public static void Load()
         {
-            Harmony.CreateAndPatchAll(typeof(Patcher));
-            Console.WriteLine("Load!");
+            Console.WriteLine("Loading PolyPlus...");
+            Harmony.CreateAndPatchAll(typeof(PolyPlusPatcher));
+            Console.WriteLine("PolyPlus Loaded!");
         }
     }
 }
