@@ -15,6 +15,6 @@ Download BepInEx from [BepInEx Bleeding Edge builds](https://builds.bepinex.dev/
 
 Download PolyMod from [github releases](https://github.com/PolyModTeam/PolyMod/releases) and place it under `BepInEx/plugins`
 
-Put `PolymodUI.polymod` to `The Battle of Polytopia\Mods` folder in **the Polytopia root folder**.
+Create an archive with .dll and with patch.json and change its extension to `.polymod`, and then put it to to `The Battle of Polytopia\Mods` folder in **the Polytopia root folder**.
 
 Enjoy!
