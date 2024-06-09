@@ -286,6 +286,12 @@
 			},
 			"cost": 3
 		},
+		"forestmagic": {
+			"techUnlocks": [
+				"archery",
+				"lumbering"
+			]
+		},
 		"sledding": {
 			"techUnlocks": [
 				"polarism"
