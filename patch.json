@@ -21,7 +21,11 @@
 		},
 		"bardur": {
 			"resourceModifier": {
+				"crop": 0,
 				"aquacrop": 0.5
+			},
+			"terrainModifier": {
+				"forest": 1.5
 			},
 			"techOverrides": {
 				"sailing": "sailing2"
@@ -72,7 +76,15 @@
 			}
 		},
 		"oumaji": {
+			"terrainModifier": {
+				"forest": 0.2,
+				"mountain":0.5,
+				"water": 0.5
+			},
 			"resourceModifier": {
+				"game": 1,
+				"crop": 0.5,
+				"fruit": 1.2,
 				"aquacrop": 0.5
 			},
 			"techOverrides": {
@@ -187,11 +199,6 @@
 			"improvementUnlocks": [
 			]
 		},
-		"spiritualism": {
-			"improvementUnlocks": [
-				"growforest"
-			]
-		},
 		"construction": {
 			"improvementUnlocks": [
 				"windmill",
@@ -203,12 +210,12 @@
 				"bombership",
 				"rammership"
 			],
-			"improvementUnlocks": [
-				"customshouse"
-			],
 			"movementUnlocks": {
 				"ocean": 1
 			},
+			"improvementUnlocks": [
+				"customshouse"
+			],
 			"cost": 3
 		},
 		"fishing": {
@@ -233,8 +240,8 @@
 			"techUnlocks": [
 				"navigation"
 			],
-			"improvementUnlocks": [
-				"port"
+			"abilityUnlocks": [
+				"waterembarking"
 			],
 			"unitUnlocks": [
 				"scoutship"
@@ -323,6 +330,48 @@
 				"water": 1,
 				"ocean": 1
 			}
+		},
+		"lumbering": {
+			"techUnlocks": [
+				"forestry"
+			],
+			"improvementUnlocks": [
+				"lumberhut",
+				"hiddensanctuary",
+				"clearforest"
+			],
+			"cost": 2,
+			"idx": -1
+		},
+		"mathematics": {
+			"improvementUnlocks": [
+			]
+		},
+		"forestry": {
+			"improvementUnlocks": [
+				"sawmill",
+				"growforest"
+			],
+			"techUnlocks": [
+			],
+			"cost": 3
+		},
+		"archery": {
+			"techUnlocks": [
+				"mathematics"
+			]
+		},
+		"hunting": {
+			"techUnlocks": [
+				"archery",
+				"lumbering"
+			]
+		},
+		"fishingsimple": {
+			"improvementUnlocks": [
+				"fishing",
+				"port"
+			]
 		}
 	},
 	"unitData": {
@@ -516,6 +565,10 @@
 
 	},
 	"improvementData": {
+		"port": {
+			"improvementAbilities": [
+			]
+		},
 		"temple": {
 			"terrainRequirements": []
 		},
@@ -600,6 +653,9 @@
 		],
 		"technology_names_sailing2": [
 			"Sailing"
+		],
+		"technology_names_lumbering": [
+			"Lumbering"
 		],
 		"unit_abilities_autoheal": [
 			"AUTO HEAL"
