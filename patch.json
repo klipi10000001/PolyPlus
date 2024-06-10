@@ -20,7 +20,12 @@
 			}
 		},
 		"bardur": {
+			"terrainModifier": {
+				"forest": 1.5
+			},
 			"resourceModifier": {
+				"game": 1,
+				"fruit": 1,
 				"aquacrop": 0.5
 			},
 			"techOverrides": {
