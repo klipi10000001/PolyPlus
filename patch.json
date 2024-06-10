@@ -340,6 +340,20 @@
 			"weapon": 4,
 			"promotionLimit": 3
 		},
+		"knight": {
+			"health":100,
+			"attack": 350,
+			"defence": 10,
+			"movement": 3,
+			"range": 1,
+			"cost": 8,
+			"unitAbilities": [
+				"dash",
+				"persist",
+				"static"
+			],
+			"promotionLimit": 999
+		},
 		"scout": {
 			"unitAbilities": [
 				"dash",
@@ -352,6 +366,13 @@
 			]
 		},
 		"polytaur": {
+			"health": 150,
+			"defence": 10,
+			"movement": 1,
+			"range": 1,
+			"attack": 30,
+			"cost": 3,
+			"hidden": true,
 			"unitAbilities": [
 				"dash",
 				"fortify",
@@ -391,6 +412,19 @@
 				"swim",
 				"static"
 			]
+		},
+		"mooni": {
+			"health": 100,
+			"defence": 10,
+			"movement": 1,
+			"range": 1,
+			"attack": 0,
+			"cost": 5,
+			"unitAbilities": [
+				"skate",
+				"freezearea"
+			],
+			"promotionLimit": 0
 		},
 		"gaami": {
 			"unitAbilities": [
@@ -472,10 +506,16 @@
 			]
 		},
 		"bombership": {
+			"defence": 20,
+			"movement": 2,
+			"range": 3,
+			"attack": 40,
+			"cost": 15,
+			"hidden": true,
+			"upgradesFrom": "transportship",
 			"unitAbilities": [
 				"carry",
 				"swim",
-				"splash",
 				"stiff",
 				"static"
 			]
@@ -578,13 +618,17 @@
 				}
 			],
 			"shouldSuggestUnlock": true
+		},
+		"enchantanimal": {
+			"cost": 3
 		}
 	},
 	"resourceData": {
 		"aquacrop": {
 			"idx": 9,
 			"resourceTerrainRequirements": [
-				"water"
+				"water",
+				"ocean"
 			]
 		}
 	},
