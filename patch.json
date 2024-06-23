@@ -208,6 +208,7 @@
 		},
 		"aquatism": {
 			"improvementUnlocks": [
+				"customshouse"
 			]
 		},
 		"spiritualism": {
@@ -226,12 +227,10 @@
 				"bombership",
 				"rammership"
 			],
-			"improvementUnlocks": [
-				"customshouse"
-			],
 			"movementUnlocks": {
 				"ocean": 1
 			},
+			"improvementUnlocks": [],
 			"cost": 3
 		},
 		"fishing": {
@@ -246,7 +245,8 @@
 				"aquatism"
 			],
 			"improvementUnlocks": [
-				"aquafarm"
+				"aquafarm",
+				"port"
 			],
 			"unitUnlocks": [
 			],
@@ -592,7 +592,8 @@
 	},
 	"improvementData": {
 		"port": {
-			"cost": 7
+			"cost": 5,
+			"improvementAbilities": []
 		},
 		"temple": {
 			"terrainRequirements": []
