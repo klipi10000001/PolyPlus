@@ -256,8 +256,8 @@
 			"techUnlocks": [
 				"navigation"
 			],
-			"improvementUnlocks": [
-				"port"
+			"abilityUnlocks": [
+				"waterembark"
 			],
 			"unitUnlocks": [
 				"scoutship"
@@ -703,6 +703,12 @@
 		],
 		"technology_names_aquanavigation": [
 			"Navigation"
+		],
+		"player_abilities_waterembark": [
+			"Embark"
+		],
+		"tooltip_ability_waterembark": [
+			"Allows land units to move on water and to turn into boats."
 		]
 	}
 }
