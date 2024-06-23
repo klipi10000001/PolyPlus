@@ -344,6 +344,50 @@
 				"ocean": 1
 			}
 		},
+		"lumbering": {
+			"techUnlocks": [
+				"forestry"
+			],
+			"improvementUnlocks": [
+				"lumberhut",
+				"hiddensanctuary",
+				"clearforest"
+			],
+			"cost": 2,
+			"idx": -1
+		},
+		"mathematics": {
+			"improvementUnlocks": []
+		},
+		"forestry": {
+			"improvementUnlocks": [
+				"sawmill",
+				"growforest"
+
+			],
+			"techUnlocks": [
+
+			],
+			"cost": 3
+
+		},
+		"archery": {
+			"techUnlocks": [
+				"mathematics"
+			]
+		},
+		"hunting": {
+			"techUnlocks": [
+				"archery",
+				"lumbering"
+			]
+		},
+		"forestmagic": {
+			"techUnlocks": [
+				"archery",
+				"lumbering"
+			]
+		},
 		"fishingsimple": {
 			"improvementUnlocks": [
 				"fishing"
@@ -703,6 +747,9 @@
 		],
 		"technology_names_aquanavigation": [
 			"Navigation"
+		],
+		"technology_names_lumbering": [
+			"Lumbering"
 		]
 	}
 }

@@ -7,8 +7,8 @@ using UnityEngine;
 namespace PolyPlus {
     public class PolyPlusPatcher
     {
-        private static string version = "0.0.8";
-        private static string branch = "main";
+        private static string version = "0.0.9";
+        private static string branch = "spiritualismfix";
         private static int _polyplusAutoidx = 480;
         private static Dictionary<string, int> _polyplusDict = new Dictionary<string, int>();
         public static void Load()
