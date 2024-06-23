@@ -9,22 +9,30 @@
 			}
 		},
 		"aquarion": {
+			"unitOverrides": {
+				"rammership": "none"
+			},
+			"techOverrides": {
+				"navigation": "aquanavigation"
+			},
 			"resourceModifier": {
 				"aquacrop": 0.5
 			},
-			"techOverrides": {
-				"riding": "riding2",
-				"freespirit": "freespirit",
-				"chivalry": "spearing",
-				"sailing": "sailing2"
+			"improvementOverrides": {
+				"port": "none",
+				"customshouse": "none"
 			}
 		},
 		"bardur": {
 			"resourceModifier": {
+				"crop": 0,
 				"aquacrop": 0.5
 			},
 			"techOverrides": {
 				"sailing": "sailing2"
+			},
+			"terrainModifier": {
+				"forest": 1.5
 			}
 		},
 		"elyrion": {
@@ -72,7 +80,15 @@
 			}
 		},
 		"oumaji": {
+			"terrainModifier": {
+				"forest": 0.2,
+				"mountain":0.5,
+				"water": 0.5
+			},
 			"resourceModifier": {
+				"game": 1,
+				"crop": 0.5,
+				"fruit": 1.2,
 				"aquacrop": 0.5
 			},
 			"techOverrides": {
@@ -123,6 +139,9 @@
 			"resourceModifier": {
 				"aquacrop": 0.5
 			},
+			"improvementOverrides": {
+				"customshouse": "none"
+			},
 			"techOverrides": {
 				"sailing": "frostwork",
 				"navigation": "polarwarfare",
@@ -133,6 +152,10 @@
 		"cymanti": {
 			"resourceModifier": {
 				"aquacrop": 0.5
+			},
+			"improvementOverrides": {
+				"port": "none",
+				"customshouse": "none"
 			},
 			"techOverrides": {
 				"construction": "recycling",
@@ -195,7 +218,7 @@
 		"construction": {
 			"improvementUnlocks": [
 				"windmill",
-				"burnforest"
+				"fertilize"
 			]
 		},
 		"navigation": {
@@ -274,9 +297,6 @@
 			"unitUnlocks": [
 				"tridention"
 			],
-			"movementUnlocks": {
-				"ocean": 1
-			},
 			"cost": 3
 		},
 		"sledding": {
@@ -323,6 +343,24 @@
 				"water": 1,
 				"ocean": 1
 			}
+		},
+		"fishingsimple": {
+			"improvementUnlocks": [
+				"fishing"
+			]
+		},
+		"marinelife": {
+			"movementUnlocks": {
+				"ocean": 2
+			}
+		},
+		"aquanavigation": {
+			"unitUnlocks": [
+				"bombership",
+				"rammership"
+			],
+			"cost": 3,
+			"idx": -1
 		}
 	},
 	"unitData": {
@@ -342,7 +380,7 @@
 		},
 		"knight": {
 			"health":100,
-			"attack": 350,
+			"attack": 35,
 			"defence": 10,
 			"movement": 3,
 			"range": 1,
@@ -350,19 +388,18 @@
 			"unitAbilities": [
 				"dash",
 				"persist",
-				"static"
-			],
-			"promotionLimit": 999
+				"polyplusstatic"
+			]
 		},
 		"scout": {
 			"unitAbilities": [
 				"dash",
-				"static"
+				"polyplusstatic"
 			]
 		},
 		"giant": {
 			"unitAbilities": [
-				"static"
+				"polyplusstatic"
 			]
 		},
 		"polytaur": {
@@ -377,14 +414,14 @@
 				"dash",
 				"fortify",
 				"independent",
-				"static"
+				"polyplusstatic"
 			]
 		},
 		"dragonegg": {
 			"unitAbilities": [
 				"grow",
 				"fortify",
-				"static"
+				"polyplusstatic"
 			]
 		},
 		"babydragon": {
@@ -394,7 +431,7 @@
 				"fly",
 				"escape",
 				"scout",
-				"static"
+				"polyplusstatic"
 			]
 		},
 		"firedragon": {
@@ -403,14 +440,14 @@
 				"fly",
 				"splash",
 				"scout",
-				"static"
+				"polyplusstatic"
 			]
 		},
 		"crab": {
 			"unitAbilities": [
 				"escape",
 				"swim",
-				"static"
+				"polyplusstatic"
 			]
 		},
 		"mooni": {
@@ -423,14 +460,13 @@
 			"unitAbilities": [
 				"skate",
 				"freezearea"
-			],
-			"promotionLimit": 0
+			]
 		},
 		"gaami": {
 			"unitAbilities": [
 				"autofreeze",
 				"freezearea",
-				"static"
+				"polyplusstatic"
 			]
 		},
 		"centipede": {
@@ -438,7 +474,7 @@
 				"dash",
 				"eat",
 				"creep",
-				"static"
+				"polyplusstatic"
 			]
 		},
 		"segment": {
@@ -446,7 +482,7 @@
 				"independent",
 				"creep",
 				"explode",
-				"static"
+				"polyplusstatic"
 			]
 		},
 		"raychi": {
@@ -456,14 +492,14 @@
 				"navigate",
 				"explode",
 				"creep",
-				"static"
+				"polyplusstatic"
 			]
 		},
 		"shaman": {
 			"unitAbilities": [
 				"convert",
 				"boost",
-				"static"
+				"polyplusstatic"
 			]
 		},
 		"dagger": {
@@ -471,7 +507,7 @@
 				"dash",
 				"surprise",
 				"independent",
-				"static"
+				"polyplusstatic"
 			]
 		},
 		"cloak": {
@@ -481,9 +517,8 @@
 				"infiltrate",
 				"dash",
 				"scout",
-				"static"
-			],
-			"promotionLimit": 0
+				"polyplusstatic"
+			]
 		},
 		"cloak_boat": {
 			"unitAbilities": [
@@ -493,7 +528,7 @@
 				"scout",
 				"infiltrate",
 				"dash",
-				"static"
+				"polyplusstatic"
 			]
 		},
 		"pirate": {
@@ -502,7 +537,7 @@
 				"swim",
 				"carry",
 				"surprise",
-				"static"
+				"polyplusstatic"
 			]
 		},
 		"bombership": {
@@ -517,7 +552,7 @@
 				"carry",
 				"swim",
 				"stiff",
-				"static"
+				"polyplusstatic"
 			]
 		},
 		"scoutship": {
@@ -526,14 +561,14 @@
 				"carry",
 				"swim",
 				"scout",
-				"static"
+				"polyplusstatic"
 			]
 		},
 		"transportship": {
 			"unitAbilities": [
 				"carry",
 				"swim",
-				"static"
+				"polyplusstatic"
 			]
 		},
 		"rammership": {
@@ -541,7 +576,7 @@
 				"dash",
 				"swim",
 				"carry",
-				"static"
+				"polyplusstatic"
 			]
 		},
 		"juggernaut": {
@@ -550,20 +585,26 @@
 				"stomp",
 				"swim",
 				"carry",
-				"static"
+				"polyplusstatic"
 			]
 		}
 
 	},
 	"improvementData": {
+		"port": {
+			"cost": 7
+		},
 		"temple": {
 			"terrainRequirements": []
 		},
-		"burnforest": {
+		"fertilize": {
 			"cost": 5,
 			"terrainRequirements": [
 				{
 					"terrain": "field"
+				},
+				{
+					"terrain": "wetland"
 				}
 			],
 			"creates": [
@@ -573,7 +614,8 @@
 			],
 			"improvementAbilities": [
 				"consumed"
-			]
+			],
+			"maxLevel": 0
 		},
 		"customshouse": {
 			"hidden": false,
@@ -601,7 +643,6 @@
 			"idx": 4
 		},
 		"aquafarm": {
-			"idx": 49,
 			"cost": 5,
 			"terrainRequirements": [
 				{
@@ -633,11 +674,11 @@
 		}
 	},
 	"localizationData": {
-		"building_names_burnforest": [
-			"Sow Сrop"
-		],
 		"building_names_aquafarm": [
 			"Harvest Aquacrop"
+		],
+		"building_names_fertilize": [
+			"Fertilize"
 		],
 		"technology_names_shipping": [
 			"Shipping"
@@ -648,14 +689,20 @@
 		"unit_abilities_autoheal": [
 			"AUTO HEAL"
 		],
-		"unit_abilities_static": [
+		"unit_abilities_polyplusstatic": [
 			"STATIC"
 		],
 		"tooltip_ability_autoheal": [
 			"This unit heals surrounding allied units when moving."
 		],
-		"tooltip_ability_static": [
+		"tooltip_ability_polyplusstatic": [
 			"This unit cannot become a veteran."
+		],
+		"polyplus_unit_veteran_static_progress": [
+			"This unit has made {0} kills."
+		],
+		"technology_names_aquanavigation": [
+			"Navigation"
 		]
 	}
 }
