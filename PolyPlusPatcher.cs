@@ -7,7 +7,7 @@ using UnityEngine;
 namespace PolyPlus {
     public class PolyPlusPatcher
     {
-        private static string version = "0.0.10";
+        private static string version = "0.0.11";
         private static string branch = "waterembark";
         private static int _polyplusAutoidx = 480;
         private static Dictionary<string, int> _polyplusDict = new Dictionary<string, int>();
@@ -21,8 +21,10 @@ namespace PolyPlus {
 
         internal static void CreateEnumCaches()
         {
-            EnumCache<PlayerAbility.Type>.AddMapping("waterembark", (PlayerAbility.Type)750);
-			EnumCache<PlayerAbility.Type>.AddMapping("waterembark", (PlayerAbility.Type)750);
+            EnumCache<PlayerAbility.Type>.AddMapping("waterembark", (PlayerAbility.Type)_polyplusAutoidx);
+			EnumCache<PlayerAbility.Type>.AddMapping("waterembark", (PlayerAbility.Type)_polyplusAutoidx);
+            _polyplusDict.Add("waterembark", _polyplusAutoidx);
+            _polyplusAutoidx++;
             EnumCache<UnitAbility.Type>.AddMapping("polyplusstatic", (UnitAbility.Type)_polyplusAutoidx);
 			EnumCache<UnitAbility.Type>.AddMapping("polyplusstatic", (UnitAbility.Type)_polyplusAutoidx);
             _polyplusDict.Add("polyplusstatic", _polyplusAutoidx);
@@ -70,7 +72,7 @@ namespace PolyPlus {
         [HarmonyPatch(typeof(PathFinder), nameof(PathFinder.IsTileAccessible))]
         private static void PathFinder_IsTileAccessible(ref bool __result, TileData tile, TileData origin, PathFinderSettings settings)
 	    {
-            if(PlayerExtensions.HasAbility(settings.playerState, (PlayerAbility.Type)750, settings.gameState) && tile.IsWater && (!origin.IsWater || settings.unit != null)){
+            if(PlayerExtensions.HasAbility(settings.playerState, (PlayerAbility.Type)_polyplusDict["waterembark"], settings.gameState) && tile.IsWater && !origin.IsWater && settings.unit != null){
                 if(settings.allowedTerrain.Contains(tile.terrain) && tile.GetExplored(settings.playerState.Id)){
                     __result = true;
                 }
@@ -93,7 +95,7 @@ namespace PolyPlus {
                 TileData tile2 = gameState.Map.GetTile(worldCoordinates);
                 tile2.SetUnit(unitState);
                 unitState.coordinates = worldCoordinates;
-                if (!unitData.IsAquatic() && !unitState.HasAbility(UnitAbility.Type.Fly, gameState) && tile2.IsWater && PlayerExtensions.HasAbility(playerState, (PlayerAbility.Type)750, gameState))
+                if (!unitData.IsAquatic() && !unitState.HasAbility(UnitAbility.Type.Fly, gameState) && tile2.IsWater && PlayerExtensions.HasAbility(playerState, (PlayerAbility.Type)_polyplusDict["waterembark"], gameState))
                 {
                     gameState.ActionStack.Add(new EmbarkAction(__instance.PlayerId, worldCoordinates));
                 }
