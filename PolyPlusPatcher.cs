@@ -7,9 +7,10 @@ using UnityEngine;
 namespace PolyPlus {
     public class PolyPlusPatcher
     {
-        private static string version = "0.0.11";
+        private static string version = "0.0.12";
         private static string branch = "waterembark";
         private static int _polyplusAutoidx = 480;
+        internal static readonly string BASE_PATH = System.IO.Path.Combine(BepInEx.Paths.BepInExRootPath, "..");
         private static Dictionary<string, int> _polyplusDict = new Dictionary<string, int>();
         public static void Load()
         {
@@ -99,6 +100,20 @@ namespace PolyPlus {
                 {
                     gameState.ActionStack.Add(new EmbarkAction(__instance.PlayerId, worldCoordinates));
                 }
+            }
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(PolytopiaDataHolder), nameof(PolytopiaDataHolder.LoadGameLogicData))]
+        public static void PolytopiaDataHolder_LoadGameLogicData(PolytopiaDataHolder __instance, ref string __result, int version)
+        {
+            System.IO.Directory.CreateDirectory(System.IO.Path.Combine(BASE_PATH, "dumpedData"));
+            System.IO.File.WriteAllText(System.IO.Path.Combine(BASE_PATH, @"dumpedData\avatarData.json"), __instance.LoadAvatarData(18));
+
+            for (int i = 0; i < __instance.gameLogicDatas.Count; i++)
+            {
+                var gameLogicData = __instance.gameLogicDatas[i];
+                System.IO.File.WriteAllText(System.IO.Path.Combine(BASE_PATH, @"dumpedData\gameLogicDatas") + gameLogicData.version + ".json", gameLogicData.data.text);
             }
         }
 

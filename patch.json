@@ -447,7 +447,8 @@
 			"unitAbilities": [
 				"escape",
 				"swim",
-				"polyplusstatic"
+				"polyplusstatic",
+				"autoflood"
 			]
 		},
 		"mooni": {
