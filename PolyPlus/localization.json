@@ -357,6 +357,10 @@
 		"English": "Sylvan Warden",
 		"Russian": "Хранитель Чащи"
 	},
+	"unit_names_treant__darkelf": {
+		"English": "Thorn Demon",
+		"Russian": "Терновый Демон"
+	},
 	"unit_abilities_foreststealth": {
 		"English": "Forest Stealth",
 		"Russian": "Скрытность в лесу"
@@ -376,5 +380,9 @@
 	"building_names_enchantforest": {
 		"English": "Enchant Forest",
 		"Russian": "Зачаровать лес"
+	},
+	"building_names_enchantforest__darkelf": {
+		"English": "Curse Forest",
+		"Russian": "Проклясть лес"
 	}
 }

@@ -56,5 +56,21 @@
 	"mycogrove__": {
 		"pixelsPerUnit": 976,
         "pivot": [0.5, 0.5]
+	},
+	"body_treant__": {
+		"pixelsPerUnit": 1690,
+        "pivot": [0.5, 0.5]
+	},
+	"body_treant_darkelf_": {
+		"pixelsPerUnit": 1760,
+        "pivot": [0.5, 0.5]
+	},
+	"body_tint_treant__": {
+		"pixelsPerUnit": 1760,
+        "pivot": [0.5, 0.5]
+	},
+	"body_treant_outline__": {
+		"pixelsPerUnit": 1628,
+        "pivot": [0.5, 0.5]
 	}
 }

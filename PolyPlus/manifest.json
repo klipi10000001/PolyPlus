@@ -1,7 +1,7 @@
 {
 	"id": "polyplus",
 	"version": "1.5.0",
-	"authors": ["Coding by JohnKlipi, Balance by MCompany, Sprites by Rastrapies and Jam's Son"],
+	"authors": ["Coding by JohnKlipi, Balance by MCompany, Sprites by Rastrapies, Jam's Son and Bananique"],
     "dependencies": [
         {
             "id": "polytopia",

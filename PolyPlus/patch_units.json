@@ -289,7 +289,7 @@
 			],
 			"hidden": true,
 			"weapon": 7,
-			"prefab": "giant",
+			"prefab": "treant",
 			"idx": -1
 		}
 	}
