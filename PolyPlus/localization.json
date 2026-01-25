@@ -211,7 +211,7 @@
 		"Russian": "Гильдия"
 	},
 	"world_rebellion_description": {
-		"English": "{0} from the {1} tribe has infiltrated the city of {2} and incited a revolt against you!"
+		"English": "A unit from the {0} tribe has infiltrated the city of {1} and incited a revolt against you!"
 	},
 	"world_rebellion_attackerdescription": {
 		"English": "You started a riot in {0}!",
@@ -252,12 +252,89 @@
 		"French (France)": "Embarquer",
 		"Spanish (Mexico)": "Embarcar"
 	},
-	"unit_names_boomchiplus": {
-		"English": "Boomchi",
-		"Russian": "Бумчи"
+	"technology_names_fishingplus": {
+		"English": "Fishing",
+		"Portuguese (Brazil)": "Pesca",
+		"Russian": "Рыбалка",
+		"Italian (Italy)": "Pesca",
+		"French (France)": "Pêche",
+		"Spanish (Mexico)": "Pesca",
+		"German (Germany)": "Fischen",
+		"Japanese": "釣り",
+		"Korean": "낚시",
+		"Hindi": "फिशिंग",
+		"Indonesian": "Memancing",
+		"Malay": "Memancing",
+		"Polish": "Rybołówstwo",
+		"Thai": "ตกปลา",
+		"Turkish": "Balık Tutma",
+		"Vietnamese": "Câu Cá",
+		"Elyrion": "ȓr∑iŋ"
 	},
-	"unit_names_raychiplus": {
-		"English": "Raychi",
-		"Russian": "Райчи"
+	"technology_names_cymsailing": {
+		"English": "Pescetism",
+		"Portuguese (Brazil)": "Pescetismo",
+		"Russian": "Рыбообразие",
+		"Italian (Italy)": "Pescetismo",
+		"French (France)": "Pescétisme",
+		"Spanish (Mexico)": "Pescetismo",
+		"German (Germany)": "Pescetismus",
+		"Japanese": "ペスカティズム",
+		"Korean": "페세티즘",
+		"Hindi": "पेसेटिज्म",
+		"Indonesian": "Pescetism",
+		"Malay": "Pescetisme",
+		"Polish": "Peskatyzm",
+		"Thai": "เพสเซตทิซึม",
+		"Turkish": "Pesketizm",
+		"Vietnamese": "Pescetism",
+		"Elyrion": "Ŧπaa#ţ∫Δ ȓr∑iŋ"
+	},
+	"technology_names_aquaculture__cymanti": {
+		"English": "Hydrology",
+		"Portuguese (Brazil)": "Hidrologia",
+		"Russian": "Гидрология",
+		"Italian (Italy)": "Idrologia",
+		"French (France)": "Hydrologie",
+		"Spanish (Mexico)": "Hidrología",
+		"German (Germany)": "Hydrologie",
+		"Japanese": "水文学",
+		"Korean": "수문학",
+		"Hindi": "जल विज्ञान",
+		"Indonesian": "Hidrologi",
+		"Malay": "Hidrologi",
+		"Polish": "Hydrologia",
+		"Thai": "อุทกวิทยา",
+		"Turkish": "Hidroloji",
+		"Vietnamese": "Thủy văn học",
+		"Elyrion": "₼iŋŋa Ŧπaa#ţ∫Δ"
+	},
+	"tile_effect_blooming": {
+		"English": "Blooming",
+		"Russian": "Цветёт"
+	},
+	"building_names_mycogrove": {
+		"English": "Mycogrove",
+		"Russian": "Грибная роща"
+	},
+	"building_names_makebloom": {
+		"English": "Blossom",
+		"Russian": "Расцвести"
+	},
+	"unit_abilities_kamikadze": {
+		"English": "CONSUMED",
+		"Russian": "ИСПОЛЬЗОВАНЫЙ"
+	},
+	"tooltip_ability_kamikadze": {
+		"English": "This unit dies after attacking.",
+		"Russian": "Этот отряд погибает после того как атакует."
+	},
+	"unit_abilities_revolt": {
+		"English": "INFILTRATE",
+		"Russian": "ВНЕДРЕНИЕ"
+	},
+	"tooltip_ability_revolt": {
+		"English": "This unit can enter enemy cities to incite revolts.",
+		"Russian": "Этот отряд может заходить во вражеские города и устраивать восстания."
 	}
 }

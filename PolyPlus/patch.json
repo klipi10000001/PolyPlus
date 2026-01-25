@@ -44,7 +44,7 @@
 		"kickoo": {
 			"startingTech": [
 				"basic",
-				"fishingsimple"
+				"fishingplus"
 			],
 			"startingStars": 3
 		},
@@ -105,21 +105,24 @@
 			"startingStars": 5
 		},
 		"cymanti": {
+			"startingTech": [
+				"+cymbase"
+			],
 			"unitOverrides": {
-				"mindbender": "mindbender"
+				"mindbender": "mindbender",
+				"rammership": "raychi"
 			},
 			"improvementOverrides": {
 				"market": "market",
-				"port": "none",
+				"port": "algae",
 				"customshouse": "clathrus"
 			},
 			"techOverrides": {
 				"roads": "cymroads",
 				"construction": "recycling",
 				"chivalry": "shock",
-				"aquaculture": "hydrology",
-				"embarksailing": "pescetism",
-				"navigation": "oceanology",
+				"embarksailing": "cymsailing",
+				"meditation": "meditation",
 				"embarquatism": "aquatism"
 			},
 			"startingUnit": "warrior",
@@ -127,13 +130,13 @@
 				{
 					"x": -1,
 					"y": -2,
-					"unitType": "raychiplus",
+					"unitType": "raychi",
 					"terrainType": "water"
 				},
 				{
 					"x": 2,
 					"y": -1,
-					"unitType": "boomchiplus",
+					"unitType": "boomchi",
 					"terrainType": "water"
 				}
 			],
@@ -141,11 +144,28 @@
 		}
 	},
 	"techData": {
+		"cymbase": {
+			"improvementUnlocks": [
+				"makebloom"
+			],
+			"cost": 0,
+			"idx": -1
+		},
+		"recycling": {
+			"abilityUnlocks": [
+				"-microbes",
+				"-decompose",
+				"+destroy"
+			],
+			"improvementUnlocks": [
+				"+mycogrove"
+			]
+		},
 		"basic": {
 			"techUnlocks": [
 				"organization",
 				"climbing",
-				"fishingsimple",
+				"fishingplus",
 				"hunting",
 				"freespirit"
 			],
@@ -357,33 +377,34 @@
 			],
 			"improvementUnlocks":[
 				"+harvestaquacrop"
+			],
+			"unitUnlocks": [
+				"-boomchi"
 			]
 		},
-		"pescetism": {
-			"unitUnlocks": [
-				"-raychi",
-				"+boomchiplus"
-			],
-			"movementUnlocks": {
-				"water": 1
-			}
-		},
-		"oceanology": {
-			"unitUnlocks": [
-				"raychiplus"
-			],
-			"improvementUnlocks": [
-				"-starfishing"
-			],
-			"movementUnlocks": {
-				"ocean": 1
-			}
-		},
-		"fishingsimple": {
+		"fishingplus": {
 			"techUnlocks": [
 				"embarksailing",
 				"aquaculture"
-			]
+			],
+			"improvementUnlocks": [
+				"fishing"
+			],
+			"cost": 1,
+			"idx": -1
+		},
+		"cymsailing": {
+			"unitUnlocks": [
+				"boomchi"
+			],
+			"techUnlocks": [
+				"navigation"
+			],
+			"movementUnlocks": {
+				"water": 1
+			},
+			"cost": 2,
+			"idx": -1
 		},
 		"marinelife": {
 			"movementUnlocks": {
@@ -534,7 +555,8 @@
 		},
 		"doomux": {
 			"unitAbilities": [
-				"+sneak"
+				"+sneak",
+				"-static"
 			]
 		},
 		"centipede": {
@@ -552,41 +574,80 @@
 		"shaman": {
 			"health": 100,
 			"defence": 10,
-			"attack": 15,
+			"attack": 30,
 			"promotionLimit": 3,
 			"unitAbilities": [
 				"-convert",
 				"-static"
 			]
 		},
-		"dagger": {
-			"unitAbilities": [
-				"-static",
-				"+staticplus"
-			]
-		},
 		"cloak": {
 			"unitAbilities": [
-				"+staticplus"
+				"+staticplus",
+				"-infiltrate",
+				"+revolt",
+				"+kamikadze",
+				"+surprise"
 			],
-			"cost": 5
-		},
-		"mermaidcloak": {
-			"unitAbilities": [
-				"+staticplus"
-			],
+			"rebelUnit": "dagger",
 			"cost": 5
 		},
 		"cloak_boat": {
 			"unitAbilities": [
 				"-static",
+				"+staticplus",
+				"-infiltrate",
+				"+revolt",
+				"+kamikadze",
+				"+surprise"
+			],
+			"rebelUnit": "dagger"
+		},
+		"dagger": {
+			"unitAbilities": [
+				"-static",
 				"+staticplus"
-			]
+			],
+			"embarksTo": "pirate"
 		},
 		"pirate": {
 			"unitAbilities": [
 				"-static",
 				"+staticplus"
+			]
+		},
+		"mermaidcloak": {
+			"unitAbilities": [
+				"+staticplus",
+				"-infiltrate",
+				"+revolt",
+				"+kamikadze",
+				"+surprise"
+			],
+			"rebelUnit": "mermaiddagger",
+			"cost": 5
+		},
+		"mermaiddagger": {
+			"unitAbilities": [
+				"-static",
+				"+staticplus"
+			]
+		},
+		"moth": {
+			"health": 50,
+			"unitAbilities": [
+				"+hide",
+				"-infiltrate",
+				"+revolt",
+				"+kamikadze",
+				"+surprise"
+			],
+			"rebelUnit": "bugegg"
+		},
+		"bugegg": {
+			"movement": 1,
+			"unitAbilities": [
+				"+land"
 			]
 		},
 		"bombership": {
@@ -629,43 +690,17 @@
 				"+staticplus"
 			]
 		},
-		"boomchiplus": {
-			"idx": -1,
-			"cost": 5,
-			"health": 100,
-			"defence": 20,
-			"movement": 2,
-			"weapon": 7,
-			"range": 0,
-			"attack": 30,
-			"promotionLimit": 0,
+		"raychi": {
 			"unitAbilities": [
-				"dash",
-				"swim",
-				"amphibious",
-				"explode",
-				"staticplus",
-				"stiff"
-			],
-			"prefab": "boomchiplus"
+				"-water",
+				"+amphibious"
+			]
 		},
-		"raychiplus": {
-			"idx": -1,
-			"cost": 8,
-			"health": 150,
-			"defence": 20,
-			"movement": 3,
-			"weapon": 7,
-			"range": 1,
-			"attack": 30,
-			"promotionLimit": 0,
-			"unitAbilities": [
-				"staticplus",
-				"dash",
-				"swim",
-				"amphibious"
-			],
-			"prefab": "raychiplus"
+		"island": {
+			"cost": 15
+		},
+		"phychi": {
+			"attack": 10
 		}
 	},
 	"improvementData": {
@@ -681,9 +716,6 @@
 			"terrainRequirements": [
 				{
 					"terrain": "field"
-				},
-				{
-					"terrain": "wetland"
 				}
 			],
 			"creates": [
@@ -700,7 +732,10 @@
 			"cost": 5,
 			"terrainRequirements": [
 				{
-					"terrain": "wetland"
+					"terrain": "field"
+				},
+				{
+					"effect": "flooded"
 				}
 			],
 			"creates": [
@@ -718,17 +753,13 @@
 			"cost": 7,
 			"terrainRequirements": [
 				{
-					"resource": "spores"
+					"resource": "crop"
 				},
 				{
-					"resource": "crop"
+					"resource": "spores"
 				}
-			]
-		},
-		"algae": {
-			"improvementAbilities": [
-				"bridge"
-			]
+			],
+			"maxLevel": 2
 		},
 		"customshouse": {
 			"hidden": false,
@@ -812,7 +843,7 @@
 			"cost": 0,
 			"terrainRequirements": [
 				{
-					"terrain": "wetland"
+					"effect": "flooded"
 				}
 			],
 			"improvementAbilities": [
@@ -851,6 +882,92 @@
 					"terrain": "mountain"
 				}
 			]
+		},
+		"algae": {
+			"cost": 3,
+			"creates": [
+				{
+					"effect": "algae"
+				}
+			]
+		},
+		"clathrus": {
+			"terrainRequirements": [
+				{
+					"terrain": "water"
+				},
+				{
+					"terrain": "ocean"
+				}
+			],
+			"adjacencyRequirements": [
+				{
+					"effect": "algae"
+				}
+			],
+			"adjacencyImprovements": [
+				{
+					"effect": "algae"
+				}
+			],
+			"improvementAbilities": [
+				"poison",
+				"limited"
+			]
+		},
+		"makebloom": {
+			"idx": -1,
+			"maxLevel": 0,
+			"cost": 2,
+			"terrainRequirements": [
+				{
+					"effect": "algae"
+				}
+			],
+			"creates": [
+				{
+					"effect": "blooming"
+				}
+			],
+			"rewards": [
+				{
+					"population": 1
+				}
+			],
+			"improvementAbilities": [
+				"discrete"
+			]
+		},
+		"mycogrove": {
+			"idx": -1,
+			"maxLevel": 0,
+			"cost": 2,
+			"creates": [
+				{
+					"effect": "overcap"
+				}
+			],
+			"rewards": [
+				{
+					"population": 1
+				}
+			],
+			"improvementAbilities": [
+				"discrete",
+				"overcapper"
+			],
+			"terrainRequirements": [
+				{
+					"improvement": "fungi"
+				}
+			]
+		},
+		"mycelium": {
+			"improvementAbilities": [
+				"-limited",
+				"-heal",
+				"+healplus"
+			]
 		}
 	},
 	"resourceData": {
@@ -871,6 +988,12 @@
 		},
 		"embarkmanual": {
 			"idx": -1
+		},
+		"healplus": {
+			"idx": -1
+		},
+		"overcapper": {
+			"idx": -1
 		}
 	},
 	"playerAbility": {
@@ -887,10 +1010,27 @@
 		},
 		"slide": {
 			"idx": -1
+		},
+		"revolt": {
+			"idx": -1
+		},
+		"kamikadze": {
+			"idx": -1
 		}
 	},
 	"tribeAbility": {
 		"citypark": {
+			"idx": -1
+		}
+	},
+	"tileEffect": {
+		"blooming": {
+			"idx": -1
+		},
+		"rebellion": {
+			"idx": -1
+		},
+		"overcap": {
 			"idx": -1
 		}
 	}
