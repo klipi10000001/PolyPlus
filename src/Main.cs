@@ -145,7 +145,7 @@ namespace PolyPlus
         [HarmonyPatch(typeof(GameLogicData), nameof(GameLogicData.CanBuild))]
         private static void GameLogicData_CanBuild(ref bool __result, GameLogicData __instance, GameState gameState, TileData tile, PlayerState playerState, ImprovementData improvement)
         {
-            if(improvement.HasAbility(EnumCache<ImprovementAbility.Type>.GetType("progresser")) && tile.improvement != null)
+            if(improvement.HasAbility(EnumCache<ImprovementAbility.Type>.GetType("overcapper")) && tile.improvement != null)
             {
                 if(Parser.improvementTerrainReq.ContainsKey(improvement.type))
                 {
@@ -154,7 +154,8 @@ namespace PolyPlus
                     {
                         if(req.improvement != ImprovementData.Type.None && tile.HasImprovement(req.improvement) && __instance.TryGetData(req.improvement, out ImprovementData requirementData))
                         {
-                            if(tile.improvement.level == requirementData.MaxLevel(playerState, gameState))
+                            if(tile.improvement.level == requirementData.MaxLevel(playerState, gameState) &&
+                                !tile.HasEffect(EnumCache<TileData.EffectType>.GetType("overcap")))
                             {
                                 __result = true;
                             }
@@ -205,18 +206,6 @@ namespace PolyPlus
         {
             if (gameState.GameLogicData.TryGetData(__instance.Type, out ImprovementData improvementData))
             {
-                if(improvementData.HasAbility(EnumCache<ImprovementAbility.Type>.GetType("progresser")))
-                {
-                    TileData tile = gameState.Map.GetTile(__instance.Coordinates);
-                    TileData cityTile = gameState.Map.GetTile(tile.rulingCityCoordinates);
-                    if (cityTile.HasImprovement(ImprovementData.Type.City))
-                    {
-                        gameState.TryGetPlayer(cityTile.owner, out PlayerState playerState);
-                        ActionUtils.RemoveScore(playerState, ScoreSheet.cityXPScore * 3);
-                        cityTile.improvement.AddPopulation(-3);
-                    }
-                }
-
                 if (improvementData.HasAbility(EnumCache<ImprovementAbility.Type>.GetType("embarkmanual")))
                 {
                     gameState.ActionStack.Add(new EmbarkAction(__instance.PlayerId, __instance.Coordinates));
@@ -290,41 +279,113 @@ namespace PolyPlus
             }
         }
 
+        private static void RemovePop(GameState gameState, TileData tile, byte playerId, int population)
+        {
+            tile.RemoveEffect(EnumCache<TileData.EffectType>.GetType("blooming"));
+            if(tile.owner == 0)
+                return;
+
+            TileData cityTile = gameState.Map.GetTile(tile.rulingCityCoordinates);
+            for (int i = 0; i < population; i++)
+            {
+                if(cityTile.HasImprovement(ImprovementData.Type.City))
+                    gameState.ActionStack.Add(new DecreasePopulationAction(playerId, cityTile.coordinates, 200));
+            }
+        }
+
         [HarmonyPostfix]
         [HarmonyPatch(typeof(ClearTileEffectAction), nameof(ClearTileEffectAction.Execute))]
         private static void ClearTileEffectAction_Execute(ClearTileEffectAction __instance, GameState gameState)
         {
             TileData tile = gameState.Map.GetTile(__instance.Target);
-            if(__instance.Effect == TileData.EffectType.Algae && tile != null && tile.HasEffect(EnumCache<TileData.EffectType>.GetType("blooming")))
-            {
+            if(tile == null) return;
+
+            bool hasAlgae = __instance.Effect == TileData.EffectType.Algae;
+            bool hasOvercap = __instance.Effect == EnumCache<TileData.EffectType>.GetType("overcap");
+            if(hasAlgae)
                 tile.RemoveEffect(EnumCache<TileData.EffectType>.GetType("blooming"));
-                if(tile.owner != 0)
+            if(hasAlgae || hasOvercap)
+                RemovePop(gameState, tile, __instance.PlayerId, 1);
+
+            // if(__instance.Effect == EnumCache<TileData.EffectType>.GetType("overcap")) // I tried to create more generic solution
+            // {
+                // Normally I would want to make so all overcap improvements get their pop reward from orig impr level up reward.
+                // if(tile.owner != 0) //  && tile.improvement != null && gameState.GameLogicData.TryGetData(tile.improvement.type, out ImprovementData improvementData)
+                // {
+                    // TileData city = gameState.Map.GetTile(tile.rulingCityCoordinates);
+                    // if(city.HasImprovement(ImprovementData.Type.City))
+                        // gameState.ActionStack.Add(new DecreasePopulationAction(__instance.PlayerId, city.coordinates, 200));
+                        // int popReward = (int)improvementData.GetPopulationReward();
+                        // foreach (var item in improvementData.growthRewards)
+                        // {
+                        //     popReward += item.population;
+                        // }
+                        // for (int i = 0; i < popReward; i++)
+                        // {
+                        //     gameState.ActionStack.Add(new DecreasePopulationAction(__instance.PlayerId, city.coordinates, 200));
+                        // }
+                // }
+            // }
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(Tile), nameof(Tile.Render), typeof(MapRenderContext))]
+        private static void Tile_Render(Tile __instance, MapRenderContext mapRenderContext )
+        {
+            TileRender(__instance);
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(Tile), nameof(Tile.Render), typeof(MapRenderContext), typeof(SkinVisualsTransientData))]
+        private static void Tile_Render(Tile __instance, MapRenderContext ctx, SkinVisualsTransientData transientSkinningData)
+        {
+            TileRender(__instance);
+        }
+
+        private static void TileRender(Tile tile)
+        {
+            TileData tileData = tile.data;
+            if(tileData.HasEffect(EnumCache<TileData.EffectType>.GetType("blooming")))
+            {
+                if(tile.algaeRenderer != null)
                 {
-                    TileData city = gameState.Map.GetTile(tile.rulingCityCoordinates);
-                    if(city.HasImprovement(ImprovementData.Type.City))
+                    tile.algaeRenderer.color = bloomColor;
+
+                    if(tile.algaeRenderer.spriteRenderer != null)
                     {
-                        gameState.ActionStack.Add(new DecreasePopulationAction(__instance.PlayerId, city.coordinates, 200));
+                        tile.algaeRenderer.spriteRenderer.color = bloomColor;
                     }
+                }
+            }
+
+            if(tileData.improvement != null && tileData.HasEffect(EnumCache<TileData.EffectType>.GetType("overcap")))
+            {
+                int newLevel =  tileData.improvement.level + 2; // Visual level != Logic level. Aka, level 0 in Logic is 1 in Visual. So instead of increment i have to add 2.
+                Console.Write(newLevel);
+                Sprite? sprite = PolyMod.Registry.GetSprite(EnumCache<ImprovementData.Type>.GetName(tileData.improvement.type), level: newLevel);
+                if (sprite != null)
+                {
+                    tile.improvement.Sprite = sprite;
                 }
             }
         }
 
-        [HarmonyPostfix]
-        [HarmonyPatch(typeof(Tile), nameof(Tile.Render))]
-        private static void Tile_Render(Tile __instance)
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(DestroyImprovementAction), nameof(DestroyImprovementAction.Execute))]
+        private static bool DestroyImprovementAction_Execute(DestroyImprovementAction __instance, GameState state)
         {
-            if(__instance.data.HasEffect(EnumCache<TileData.EffectType>.GetType("blooming")))
+            TileData tile = state.Map.GetTile(__instance.Coordinates);
+            TileData.EffectType overcapEffect = EnumCache<TileData.EffectType>.GetType("overcap");
+            if(tile.HasEffect(overcapEffect))
             {
-                if(__instance.algaeRenderer != null)
-                {
-                    __instance.algaeRenderer.color = bloomColor;
-
-                    if(__instance.algaeRenderer.spriteRenderer != null)
-                    {
-                        __instance.algaeRenderer.spriteRenderer.color = bloomColor;
-                    }
-                }
+                __instance.AddSubAction(new ClearTileEffectAction(
+                    __instance.PlayerId,
+                    __instance.Coordinates,
+                    overcapEffect,
+                    false
+                ));
             }
+            return true;
         }
     }
 }

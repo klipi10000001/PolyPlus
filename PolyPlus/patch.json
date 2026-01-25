@@ -151,7 +151,9 @@
 		},
 		"recycling": {
 			"abilityUnlocks": [
-				"-microbes"
+				"-microbes",
+				"-decompose",
+				"+destroy"
 			],
 			"improvementUnlocks": [
 				"+mycogrove"
@@ -939,13 +941,19 @@
 			"idx": -1,
 			"maxLevel": 0,
 			"cost": 2,
-			"improvementAbilities": [
-				"progresser"
+			"creates": [
+				{
+					"effect": "overcap"
+				}
 			],
 			"rewards": [
 				{
-					"population": 4
+					"population": 1
 				}
+			],
+			"improvementAbilities": [
+				"discrete",
+				"overcapper"
 			],
 			"terrainRequirements": [
 				{
@@ -983,7 +991,7 @@
 		"healplus": {
 			"idx": -1
 		},
-		"progresser": {
+		"overcapper": {
 			"idx": -1
 		}
 	},
@@ -1019,6 +1027,9 @@
 			"idx": -1
 		},
 		"rebellion": {
+			"idx": -1
+		},
+		"overcap": {
 			"idx": -1
 		}
 	}
