@@ -1,0 +1,278 @@
+{
+	"unitData": {
+		"scout": {
+			"cost": 5,
+			"unitAbilities": [
+				"+staticplus"
+			]
+		},
+		"knight": {
+			"health":100,
+			"attack": 35,
+			"defence": 10,
+			"movement": 3,
+			"range": 1,
+			"cost": 8,
+			"unitAbilities": [
+				"-fortify",
+				"+staticplus"
+			]
+		},
+		"mindbender": {
+			"health": 100,
+			"defence": 10,
+			"movement": 1,
+			"range": 1,
+			"attack": 0,
+			"cost": 5,
+			"weapon": 4,
+			"promotionLimit": 3
+		},
+		"giant": {
+			"unitAbilities": [
+				"-static",
+				"+staticplus"
+			]
+		},
+		"polytaur": {
+			"cost": 3,
+			"unitAbilities": [
+				"-static",
+				"+staticplus"
+			]
+		},
+		"dragonegg": {
+			"unitAbilities": [
+				"-static",
+				"+staticplus"
+			]
+		},
+		"babydragon": {
+			"unitAbilities": [
+				"-static",
+				"+staticplus"
+			]
+		},
+		"firedragon": {
+			"unitAbilities": [
+				"-static",
+				"+staticplus"
+			]
+		},
+		"crab": {
+			"unitAbilities": [
+				"-static",
+				"+staticplus"
+			]
+		},
+		"mooni": {
+			"health": 100,
+			"defence": 20,
+			"movement": 1,
+			"range": 1,
+			"attack": 0,
+			"cost": 3,
+			"unitAbilities": [
+				"-autofreeze",
+				"+staticplus",
+				"+freezearea",
+				"-skate",
+				"+slide"
+			]
+		},
+		"gaami": {
+			"unitAbilities": [
+				"-static",
+				"+staticplus",
+				"+slide"
+			]
+		},
+		"yuukwi": {
+			"health": 100,
+			"defence": 0,
+			"movement": 2,
+			"range": 1,
+			"attack": 0,
+			"cost": 8,
+			"unitAbilities": [
+				"skate",
+				"freezearea",
+				"autofreeze",
+				"stiff",
+				"staticplus"
+			],
+			"weapon": 7,
+			"promotionLimit": 3,
+			"prefab": "yuukwi",
+			"idx": -1
+		},
+		"icefortress": {
+			"health": 200,
+			"defence": 30,
+			"movement": 1,
+			"range": 2,
+			"attack": 40,
+			"cost": 10,
+			"unitAbilities": [
+				"-escape",
+				"-static",
+				"+staticplus",
+				"+dash"
+			]
+		},
+		"hexapod": {
+			"unitAbilities": [
+				"-sneak"
+			]
+		},
+		"doomux": {
+			"unitAbilities": [
+				"+sneak",
+				"-static"
+			]
+		},
+		"centipede": {
+			"unitAbilities": [
+				"-static",
+				"+staticplus"
+			]
+		},
+		"segment": {
+			"unitAbilities": [
+				"-static",
+				"+staticplus"
+			]
+		},
+		"shaman": {
+			"health": 100,
+			"defence": 10,
+			"attack": 30,
+			"promotionLimit": 3,
+			"unitAbilities": [
+				"-convert",
+				"-static"
+			]
+		},
+		"cloak": {
+			"unitAbilities": [
+				"+staticplus",
+				"-infiltrate",
+				"+revolt",
+				"+kamikadze",
+				"+surprise"
+			],
+			"rebelUnit": "dagger",
+			"cost": 5
+		},
+		"cloak_boat": {
+			"unitAbilities": [
+				"-static",
+				"+staticplus",
+				"-infiltrate",
+				"+revolt",
+				"+kamikadze",
+				"+surprise"
+			],
+			"rebelUnit": "dagger"
+		},
+		"dagger": {
+			"unitAbilities": [
+				"-static",
+				"+staticplus"
+			],
+			"embarksTo": "pirate"
+		},
+		"pirate": {
+			"unitAbilities": [
+				"-static",
+				"+staticplus"
+			]
+		},
+		"mermaidcloak": {
+			"unitAbilities": [
+				"+staticplus",
+				"-infiltrate",
+				"+revolt",
+				"+kamikadze",
+				"+surprise"
+			],
+			"rebelUnit": "mermaiddagger",
+			"cost": 5
+		},
+		"mermaiddagger": {
+			"unitAbilities": [
+				"-static",
+				"+staticplus"
+			]
+		},
+		"moth": {
+			"health": 50,
+			"unitAbilities": [
+				"+hide",
+				"-infiltrate",
+				"+revolt",
+				"+kamikadze",
+				"+surprise"
+			],
+			"rebelUnit": "bugegg"
+		},
+		"bugegg": {
+			"movement": 1,
+			"unitAbilities": [
+				"+land"
+			]
+		},
+		"bombership": {
+			"defence": 20,
+			"movement": 2,
+			"range": 3,
+			"attack": 40,
+			"cost": 10,
+			"hidden": true,
+			"upgradesFrom": "transportship",
+			"unitAbilities": [
+				"-splash",
+				"-static",
+				"+staticplus"
+			]
+		},
+		"scoutship": {
+			"cost": 3,
+			"unitAbilities": [
+				"-static",
+				"+staticplus"
+			]
+		},
+		"transportship": {
+			"unitAbilities": [
+				"-static",
+				"+staticplus"
+			]
+		},
+		"rammership": {
+			"unitAbilities": [
+				"-static",
+				"+staticplus"
+			]
+		},
+		"juggernaut": {
+			"unitAbilities": [
+				"-stiff",
+				"-static",
+				"+staticplus"
+			]
+		},
+		"raychi": {
+			"unitAbilities": [
+				"-water",
+				"+amphibious"
+			]
+		},
+		"island": {
+			"cost": 15
+		},
+		"phychi": {
+			"attack": 10
+		}
+	}
+}

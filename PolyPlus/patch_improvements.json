@@ -1,0 +1,274 @@
+{
+	"improvementData": {
+		"port": {
+			"cost": 5,
+			"improvementAbilities": []
+		},
+		"temple": {
+			"terrainRequirements": []
+		},
+		"fertilize": {
+			"cost": 5,
+			"terrainRequirements": [
+				{
+					"terrain": "field"
+				}
+			],
+			"creates": [
+				{
+					"resource": "crop"
+				}
+			],
+			"improvementAbilities": [
+				"consumed"
+			],
+			"maxLevel": 0
+		},
+		"aquafertilize": {
+			"cost": 5,
+			"terrainRequirements": [
+				{
+					"terrain": "field"
+				},
+				{
+					"effect": "flooded"
+				}
+			],
+			"creates": [
+				{
+					"resource": "crop"
+				}
+			],
+			"improvementAbilities": [
+				"consumed"
+			],
+			"maxLevel": 0,
+			"idx": -1
+		},
+		"fungi": {
+			"cost": 7,
+			"terrainRequirements": [
+				{
+					"resource": "crop"
+				},
+				{
+					"resource": "spores"
+				}
+			],
+			"maxLevel": 2
+		},
+		"customshouse": {
+			"hidden": false,
+			"cost": 10,
+			"work": 1,
+			"terrainRequirements": [
+				{
+					"terrain": "field"
+				}
+			],
+			"adjacencyRequirements": [
+				{
+					"improvement": "port"
+				}
+			],
+			"adjacencyImprovements": [
+				{
+					"improvement": "port"
+				}
+			],
+			"improvementAbilities": [
+				"limited"
+			],
+			"maxLevel": 8,
+			"idx": 4
+		},
+		"harvestaquacrop": {
+			"idx": -1,
+			"cost": 5,
+			"terrainRequirements": [
+				{
+					"resource": "aquacrop"
+				}
+			],
+			"improvementAbilities": [
+				"consumed"
+			],
+			"maxLevel": 0,
+			"rewards": [
+				{
+					"population": 2
+				}
+			],
+			"shouldSuggestUnlock": true
+		},
+		"enchantanimal": {
+			"cost": 3
+		},
+		"market": {
+			"improvementAbilities": [
+				"limited",
+				"halved"
+			]
+		},
+		"guild": {
+			"cost": 7,
+			"rewards": [
+				{
+					"population": 2
+				}
+			],
+			"terrainRequirements": [
+				{
+					"terrain": "field"
+				},
+				{
+					"terrain": "forest"
+				},
+				{
+					"terrain": "mountain"
+				}
+			],
+			"improvementAbilities": [
+				"limited"
+			],
+			"maxLevel": 0,
+			"idx": -1
+		},
+		"instantembark": {
+			"idx": -1,
+			"cost": 0,
+			"terrainRequirements": [
+				{
+					"effect": "flooded"
+				}
+			],
+			"improvementAbilities": [
+				"discrete",
+				"embarkmanual",
+				"manual",
+				"freelance"
+			]
+		},
+		"windmill": {
+			"terrainRequirements": [
+				{
+					"terrain": "field"
+				},
+				{
+					"terrain": "mountain"
+				}
+			]
+		},
+		"sawmill": {
+			"terrainRequirements": [
+				{
+					"terrain": "field"
+				},
+				{
+					"terrain": "mountain"
+				}
+			]
+		},
+		"forge": {
+			"terrainRequirements": [
+				{
+					"terrain": "field"
+				},
+				{
+					"terrain": "mountain"
+				}
+			]
+		},
+		"algae": {
+			"cost": 3,
+			"creates": [
+				{
+					"effect": "algae"
+				}
+			]
+		},
+		"clathrus": {
+			"terrainRequirements": [
+				{
+					"terrain": "water"
+				},
+				{
+					"terrain": "ocean"
+				}
+			],
+			"adjacencyRequirements": [
+				{
+					"effect": "algae"
+				}
+			],
+			"adjacencyImprovements": [
+				{
+					"effect": "algae"
+				}
+			],
+			"improvementAbilities": [
+				"poison",
+				"limited"
+			]
+		},
+		"makebloom": {
+			"idx": -1,
+			"maxLevel": 0,
+			"cost": 2,
+			"terrainRequirements": [
+				{
+					"effect": "algae"
+				}
+			],
+			"creates": [
+				{
+					"effect": "blooming"
+				}
+			],
+			"rewards": [
+				{
+					"population": 1
+				}
+			],
+			"improvementAbilities": [
+				"discrete"
+			]
+		},
+		"mycogrove": {
+			"idx": -1,
+			"maxLevel": 0,
+			"cost": 2,
+			"creates": [
+				{
+					"effect": "overcap"
+				}
+			],
+			"rewards": [
+				{
+					"population": 1
+				}
+			],
+			"improvementAbilities": [
+				"discrete",
+				"overcapper"
+			],
+			"terrainRequirements": [
+				{
+					"improvement": "fungi"
+				}
+			]
+		},
+		"mycelium": {
+			"improvementAbilities": [
+				"-limited",
+				"-heal",
+				"+healplus"
+			]
+		},
+		"canal": {
+			"improvementAbilities": [
+				"+pontdeflect"
+			]
+		}
+	}
+}

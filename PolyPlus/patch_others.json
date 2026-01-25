@@ -1,0 +1,58 @@
+{
+	"resourceData": {
+		"aquacrop": {
+			"idx": 9,
+			"resourceTerrainRequirements": [
+				"water",
+				"ocean"
+			]
+		}
+	},
+	"diplomacyData":{
+		"embassyIncome": 1
+	},
+	"improvementAbility": {
+		"halved": {
+			"idx": -1
+		},
+		"embarkmanual": {
+			"idx": -1
+		},
+		"healplus": {
+			"idx": -1
+		},
+		"overcapper": {
+			"idx": -1
+		},
+		"pontdeflect": {
+			"idx": -1
+		}
+	},
+	"playerAbility": {
+		"waterembark": {
+			"idx": -1
+		},
+		"dashembark": {
+			"idx": -1
+		}
+	},
+	"unitAbility": {
+		"staticplus": {
+			"idx": -1
+		},
+		"slide": {
+			"idx": -1
+		},
+		"revolt": {
+			"idx": -1
+		},
+		"kamikadze": {
+			"idx": -1
+		}
+	},
+	"tribeAbility": {
+		"citypark": {
+			"idx": -1
+		}
+	}
+}

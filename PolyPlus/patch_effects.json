@@ -1,0 +1,21 @@
+{
+	"tileEffect": {
+		"blooming": {
+			"idx": -1
+		},
+		"rebellion": {
+			"idx": -1
+		},
+		"overcap": {
+			"idx": -1
+		}
+	},
+	"unitEffect": {
+		"enablemovement": {
+			"idx": -1
+		},
+		"enableattack": {
+			"idx": -1
+		}
+	}
+}

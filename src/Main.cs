@@ -251,7 +251,7 @@ namespace PolyPlus
                 {
                     if(unit.HasEffect(EnumCache<UnitEffect>.GetType("enablemovement")))
                     {
-                        unit.moved = false;
+                        unit.moved = false; // doesnt work yet, later
                     }
                     if(unit.HasEffect(EnumCache<UnitEffect>.GetType("enableattack")))
                     {
