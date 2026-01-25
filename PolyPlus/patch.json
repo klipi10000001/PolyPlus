@@ -20,8 +20,7 @@
 			"improvementOverrides": {
 				"fertilize": "aquafertilize",
 				"port": "none",
-				"customshouse": "none",
-				"landfill": "canal"
+				"customshouse": "none"
 			},
 			"tribeAbilities": [],
 			"startingStars": 5
@@ -425,6 +424,11 @@
 		},
 		"trade": {
 			"taskUnlocks": []
+		},
+		"aquabase": {
+			"improvementUnlocks": [
+				"canal"
+			]
 		}
 	},
 	"unitData": {
@@ -968,6 +972,11 @@
 				"-heal",
 				"+healplus"
 			]
+		},
+		"canal": {
+			"improvementAbilities": [
+				"+pontdeflect"
+			]
 		}
 	},
 	"resourceData": {
@@ -993,6 +1002,9 @@
 			"idx": -1
 		},
 		"overcapper": {
+			"idx": -1
+		},
+		"pontdeflect": {
 			"idx": -1
 		}
 	},
@@ -1031,6 +1043,14 @@
 			"idx": -1
 		},
 		"overcap": {
+			"idx": -1
+		}
+	},
+	"unitEffect": {
+		"enablemovement": {
+			"idx": -1
+		},
+		"enableattack": {
 			"idx": -1
 		}
 	}

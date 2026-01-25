@@ -16,6 +16,7 @@ namespace PolyPlus
         {
             modLogger = logger;
             PolyMod.Loader.AddPatchDataType("tileEffect", typeof(TileData.EffectType));
+            PolyMod.Loader.AddPatchDataType("unitEffect", typeof(UnitEffect));
             Harmony.CreateAndPatchAll(typeof(Main));
             Harmony.CreateAndPatchAll(typeof(ApiHandler));
             Harmony.CreateAndPatchAll(typeof(Diplomacy));
@@ -202,10 +203,28 @@ namespace PolyPlus
                 }
             }
         }
-
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(BuildAction), nameof(BuildAction.Execute))]
+        private static bool BuildAction_Execute(BuildAction __instance, GameState gameState)
+        {
+            TileData tileData = gameState.Map.GetTile(__instance.Coordinates); // So, in order to enable movement for unit later I added an effect !
+            UnitState unit = tileData.unit;
+            if(unit != null && __instance.Type == ImprovementData.Type.Canal)
+            {
+                if(!unit.moved)
+                {
+                    unit.AddEffect(EnumCache<UnitEffect>.GetType("enablemovement"));
+                }
+                if(!unit.attacked)
+                {
+                    unit.AddEffect(EnumCache<UnitEffect>.GetType("enableattack"));
+                }
+            }
+            return true;
+        }
         [HarmonyPostfix]
         [HarmonyPatch(typeof(BuildAction), nameof(BuildAction.Execute))]
-        private static void BuildAction_Execute(BuildAction __instance, GameState gameState)
+        private static void BuildAction_Execute_Postfix(BuildAction __instance, GameState gameState)
         {
             if (gameState.GameLogicData.TryGetData(__instance.Type, out ImprovementData improvementData))
             {
@@ -225,6 +244,21 @@ namespace PolyPlus
                             break;
                         }
                     }
+                }
+                TileData tileData = gameState.Map.GetTile(__instance.Coordinates);
+                UnitState unit = tileData.unit;
+                if(unit != null)
+                {
+                    if(unit.HasEffect(EnumCache<UnitEffect>.GetType("enablemovement")))
+                    {
+                        unit.moved = false;
+                    }
+                    if(unit.HasEffect(EnumCache<UnitEffect>.GetType("enableattack")))
+                    {
+                        unit.attacked = false;
+                    }
+                    unit.RemoveEffect(EnumCache<UnitEffect>.GetType("enablemovement"));
+                    unit.RemoveEffect(EnumCache<UnitEffect>.GetType("enableattack"));
                 }
             }
         }
@@ -260,6 +294,10 @@ namespace PolyPlus
                     {
                         CommandUtils.AddCommand(gameState, __result, new BuildCommand(player.Id, improvementData.type, tile.coordinates), includeUnavailable);
                     }
+                }
+                if(improvementData.type == ImprovementData.Type.Canal && tile.isFloodable() && gameState.GameLogicData.CanBuild(gameState, tile, player, improvementData) && !unit.CanBuild()) // Canal building after moving
+                {
+                    CommandUtils.AddCommand(gameState, __result, new BuildCommand(player.Id, improvementData.type, tile.coordinates), includeUnavailable);
                 }
             }
         }
