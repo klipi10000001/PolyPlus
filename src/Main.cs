@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using BepInEx.Logging;
+using HarmonyLib;
 using Newtonsoft.Json.Linq;
 using PolyPlus.Utils;
 using Polytopia.Data;
@@ -9,9 +10,10 @@ namespace PolyPlus
     public static class Main
     {
         private static Color32 bloomColor = new Color32(255, 105, 225, 255);
-
-        public static void Load()
+        internal static ManualLogSource? modLogger;
+        public static void Load(ManualLogSource logger)
         {
+            modLogger = logger;
             PolyMod.Loader.AddPatchDataType("tileEffect", typeof(TileData.EffectType));
             Harmony.CreateAndPatchAll(typeof(Main));
             Harmony.CreateAndPatchAll(typeof(ApiHandler));
