@@ -3,6 +3,7 @@ using HarmonyLib;
 using Newtonsoft.Json.Linq;
 using PolyPlus.Utils;
 using Polytopia.Data;
+using PolytopiaBackendBase.Common;
 using UnityEngine;
 
 namespace PolyPlus
@@ -388,6 +389,54 @@ namespace PolyPlus
                 ));
             }
             return true;
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(StartMatchAction), nameof(StartMatchAction.ExecuteDefault))]
+        private static void StartMatchAction_ExecuteDefault(GameState gameState)
+        {
+            if (gameState.PlayerStates != null && gameState.PlayerStates.Count > 0)
+            {
+                foreach (var playerState in gameState.PlayerStates)
+                {
+                    if (playerState.tribe == TribeType.Aquarion && playerState.startTile != WorldCoordinates.NULL_COORDINATES)
+                    {
+                        TileData startingTile = gameState.Map.GetTile(playerState.startTile);
+                        startingTile.AddEffect(TileData.EffectType.Flooded);
+                    }
+                }
+            }
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(TerrainRenderer), nameof(TerrainRenderer.UpdateGraphics))]
+        private static void TerrainRenderer_UpdateGraphics(TerrainRenderer __instance, Tile tile)
+        {
+            TribeType tribe = GameManager.GameState.GameLogicData.GetTribeTypeFromStyle(tile.data.climate);
+            SkinType skinType = tile.data.Skin;
+
+            if (tribe == TribeType.Aquarion && tile.data.terrain == Polytopia.Data.TerrainData.Type.Mountain)
+            {
+                string style = skinType != SkinType.Default ? EnumCache<SkinType>.GetName(skinType) : EnumCache<TribeType>.GetName(tribe);
+                Sprite? sprite = PolyMod.Registry.GetSprite(EnumCache<Polytopia.Data.TerrainData.Type>.GetName(Polytopia.Data.TerrainData.Type.Field), style);
+                if (sprite != null)
+                {
+                    __instance.spriteRenderer.Sprite = sprite;
+                }
+            }
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(CaptureCityAction), nameof(CaptureCityAction.ExecuteDefault))]
+        private static void CaptureCityAction_ExecuteDefault(CaptureCityAction __instance, GameState gameState)
+        {
+            if (!gameState.TryGetPlayer(__instance.PlayerId, out PlayerState playerState))
+                return;
+            if (playerState.tribe == TribeType.Aquarion && playerState.startTile != WorldCoordinates.NULL_COORDINATES)
+            {
+                TileData tile = gameState.Map.GetTile(__instance.Coordinates);
+                tile.Flood(playerState);
+            }
         }
     }
 }
