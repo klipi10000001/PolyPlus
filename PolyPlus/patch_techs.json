@@ -286,6 +286,20 @@
 			"improvementUnlocks": [
 				"canal"
 			]
+		},
+		"elyforestry": {
+			"techUnlocks": [
+				"mathematics"
+			],
+			"improvementUnlocks": [
+				"sanctuary",
+				"enchantforest"
+			],
+			"abilityUnlocks": [
+				"treehouse"
+			],
+			"cost": 2,
+			"idx": -1
 		}
 	}
 }

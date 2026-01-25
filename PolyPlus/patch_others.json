@@ -48,6 +48,9 @@
 		},
 		"kamikadze": {
 			"idx": -1
+		},
+		"absorb": {
+			"idx": -1
 		}
 	},
 	"tribeAbility": {

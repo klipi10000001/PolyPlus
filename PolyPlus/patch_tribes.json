@@ -32,7 +32,16 @@
 			"startingStars": 3
 		},
 		"elyrion": {
-			"startingStars": 5
+			"startingStars": 5,
+			"techOverrides": {
+				"forestry": "elyforestry"
+			},
+			"tribeAbilities": [
+				"-rainbowvision"
+			],
+			"improvementOverrides": {
+				"sawmill": "none"
+			}
 		},
 		"hoodrick": {
 			"startingStars": 5

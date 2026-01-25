@@ -269,6 +269,40 @@
 			"improvementAbilities": [
 				"+pontdeflect"
 			]
+		},
+		"sanctuary": {
+			"work": 0,
+			"growthRewards": [
+				{
+					"population": 1
+				}
+			],
+			"improvementAbilities": [
+				"attract",
+				"limited"
+			],
+			"growthRate": 3
+		},
+		"enchantforest": {
+			"cost": 8,
+			"terrainRequirements": [
+				{
+					"terrain": "forest"
+				}
+			],
+			"improvementAbilities": [
+				"consumed"
+			],
+			"maxLevel": 0,
+			"creates": [
+				{
+					"unit": "treant"
+				},
+				{
+					"terrain": "field"
+				}
+			],
+			"idx": -1
 		}
 	}
 }

@@ -273,6 +273,24 @@
 		},
 		"phychi": {
 			"attack": 10
+		},
+		"treant": {
+			"health": 200,
+			"defence": 20,
+			"movement": 1,
+			"range": 1,
+			"attack": 20,
+			"cost": 8,
+			"unitAbilities": [
+				"dash",
+				"absorb",
+                "independent",
+                "static"
+			],
+			"hidden": true,
+			"weapon": 7,
+			"prefab": "giant",
+			"idx": -1
 		}
 	}
 }

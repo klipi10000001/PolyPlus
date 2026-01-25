@@ -222,6 +222,7 @@ namespace PolyPlus
             }
             return true;
         }
+
         [HarmonyPostfix]
         [HarmonyPatch(typeof(BuildAction), nameof(BuildAction.Execute))]
         private static void BuildAction_Execute_Postfix(BuildAction __instance, GameState gameState)
@@ -474,6 +475,21 @@ namespace PolyPlus
             {
                 TileData tile = gameState.Map.GetTile(__instance.Coordinates);
                 tile.Flood(playerState);
+            }
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(AttackAction), nameof(AttackAction.Execute))]
+        private static void AttackAction_Execute(AttackAction __instance, GameState state) // It also heals on retal, so i need to handle ts.
+        {
+            WorldCoordinates healCoords = __instance.Origin;
+            // if(__instance.ShouldMoveToTarget)
+            //     healCoords = __instance.Target;
+
+            TileData tile = state.Map.GetTile(healCoords);
+            if(tile.unit != null && tile.unit.HasAbility(EnumCache<UnitAbility.Type>.GetType("absorb")))
+            {
+                state.ActionStack.Add(new HealAction(__instance.PlayerId, healCoords, (ushort)__instance.Damage));
             }
         }
     }
