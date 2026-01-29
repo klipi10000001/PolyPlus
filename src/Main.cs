@@ -357,11 +357,12 @@ namespace PolyPlus
             TileData tile = gameState.Map.GetTile(__instance.Target);
             if(tile == null) return;
 
-            bool hasAlgae = __instance.Effect == TileData.EffectType.Algae;
+            bool hasBloomingAlgae = __instance.Effect == TileData.EffectType.Algae
+                && tile.HasEffect(EnumCache<TileData.EffectType>.GetType("blooming"));
             bool hasOvercap = __instance.Effect == EnumCache<TileData.EffectType>.GetType("overcap");
-            if(hasAlgae)
+            if(hasBloomingAlgae)
                 tile.RemoveEffect(EnumCache<TileData.EffectType>.GetType("blooming"));
-            if(hasAlgae || hasOvercap)
+            if(hasBloomingAlgae || hasOvercap)
                 RemovePop(gameState, tile, __instance.PlayerId, 1);
 
             // if(__instance.Effect == EnumCache<TileData.EffectType>.GetType("overcap")) // I tried to create more generic solution
