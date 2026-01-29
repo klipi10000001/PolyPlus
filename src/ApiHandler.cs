@@ -53,7 +53,7 @@ namespace PolyPlus
 								tile.IsWater &&
 								terrainRequirements.terrain.type == TerrainData.Type.Field &&
 								improvement.type != ImprovementData.Type.Road &&
-								!improvement.HasAbility(EnumCache<ImprovementAbility.Type>.GetType("pontdeflect")) &&
+								!improvement.HasAbility(EnumCache<ImprovementAbility.Type>.GetType("pontoondeflect")) &&
 								playerState.HasAbility(PlayerAbility.Type.Pontoon, gameState)
 							)
 							{

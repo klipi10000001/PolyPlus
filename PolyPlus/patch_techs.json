@@ -32,6 +32,9 @@
 			"improvementUnlocks": [
 				"+instantembark"
 			],
+			"abilityUnlocks": [
+				"+disband"
+			],
 			"movementUnlocks": {
 				"water": 1
 			}
@@ -49,6 +52,9 @@
 			"techUnlocks": [
 				"roads",
 				"shields"
+			],
+			"abilityUnlocks": [
+				"-disband"
 			],
 			"cost": 1
 		},
@@ -164,7 +170,7 @@
 				"temple"
 			],
 			"abilityUnlocks": [
-				"disband"
+				"-disband"
 			],
 			"movementUnlocks": {
 				"ocean": 0

@@ -283,7 +283,7 @@
 			"cost": 8,
 			"unitAbilities": [
 				"dash",
-				"absorb",
+				"autoheal",
                 "independent",
                 "static"
 			],

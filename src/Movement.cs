@@ -24,13 +24,21 @@ namespace PolyPlus
                 if (PlayerExtensions.HasAbility(settings.playerState, EnumCache<PlayerAbility.Type>.GetType("waterembark"), settings.gameState)
                     && settings.allowedTerrain.Contains(tile.terrain) && tile.GetExplored(settings.playerState.Id))
                 {
-                    if(tile.IsWater && !tile.HasEffect(TileData.EffectType.Algae) && !tile.HasImprovement(ImprovementData.Type.Bridge) && (!origin.IsWater || origin.HasImprovement(ImprovementData.Type.Bridge))) // I NEED TO CHECK BRIDGE ABIL INSTEAD
+                    bool tileHasBridge = tile.HasEffect(TileData.EffectType.Algae)
+                        || tile.HasImprovement(ImprovementData.Type.Bridge);
+
+                    bool originHasBridge = origin.HasEffect(TileData.EffectType.Algae)
+                        || origin.HasImprovement(ImprovementData.Type.Bridge);
+                    if(tile.IsWater && !tileHasBridge &&
+                        (!origin.IsWater || originHasBridge)) // I NEED TO CHECK BRIDGE ABIL INSTEAD
                     {
                         __result = true;
                         return;
                     }
-                    if(origin.IsWater && !origin.HasEffect(TileData.EffectType.Algae) && !origin.HasImprovement(ImprovementData.Type.Bridge) && !tile.IsWater && settings.unit.HasAbility(UnitAbility.Type.Land)) // I NEED TO CHECK BRIDGE ABIL INSTEAD
+                    if(origin.IsWater && !originHasBridge &&
+                        !tile.IsWater && settings.unit.HasAbility(UnitAbility.Type.Land)) // I NEED TO CHECK BRIDGE ABIL INSTEAD
                     {
+                        // wat?
                         __result = false;
                         return;
                     }
@@ -162,7 +170,8 @@ namespace PolyPlus
 
             // Fly / Creep
             if (unitData.HasAbility(UnitAbility.Type.Fly) ||
-                unitData.HasAbility(UnitAbility.Type.Creep))
+                unitData.HasAbility(UnitAbility.Type.Creep) ||
+                unit.HasEffect(UnitEffect.Boosted))
             {
                 __result = TILE_COST;
                 return false;
@@ -182,17 +191,17 @@ namespace PolyPlus
             if (__instance.HasRoadTo(fromTile, settings.gameState, unit.owner) &&
                 __instance.terrain != TerrainData.Type.Ice &&
                 !unitData.HasAbility(UnitAbility.Type.Skate) &&
-                !unitData.HasAbility(UnitAbility.Type.Creep) &&
                 !unitData.HasAbility(UnitAbility.Type.Swim))
             {
                 __result /= 2;
                 return false;
             }
 
+            bool hasRoughTerrain = ( __instance.improvement != null && settings.gameState.GameLogicData.TryGetData(__instance.improvement.type, out ImprovementData improvementData) 
+                && improvementData.HasAbility(ImprovementAbility.Type.Slow)) ||__instance.terrain == TerrainData.Type.Mountain;
+
             // Condition for tiles to cost 30
-            if (( __instance.improvement != null && settings.gameState.GameLogicData.TryGetData(__instance.improvement.type, out ImprovementData improvementData) 
-                && improvementData.HasAbility(ImprovementAbility.Type.Slow)) ||
-                __instance.terrain == TerrainData.Type.Mountain)
+            if (hasRoughTerrain)
             {
                 __result *= 3;
                 return false;

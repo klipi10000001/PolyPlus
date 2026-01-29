@@ -384,5 +384,13 @@
 	"building_names_enchantforest__darkelf": {
 		"English": "Curse Forest",
 		"Russian": "Проклясть лес"
+	},
+	"unit_abilities_autoheal": {
+		"English": "AUTOHEAL",
+		"Russian": "АВТОЛЕЧЕНИЕ"
+	},
+	"tooltip_ability_autoheal": {
+		"English": "This unit heals itself and other allied units around when moving.",
+		"Russian": "Этот отряд лечит себя и союзнические отряды вокруг когда передвигается."
 	}
 }

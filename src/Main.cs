@@ -213,6 +213,7 @@ namespace PolyPlus
             {
                 if(!unit.moved)
                 {
+                    Console.Write("ADDDING ENABLE MOVEMENT");
                     unit.AddEffect(EnumCache<UnitEffect>.GetType("enablemovement"));
                 }
                 if(!unit.attacked)
@@ -246,22 +247,36 @@ namespace PolyPlus
                         }
                     }
                 }
-                TileData tileData = gameState.Map.GetTile(__instance.Coordinates);
-                UnitState unit = tileData.unit;
-                if(unit != null)
-                {
-                    if(unit.HasEffect(EnumCache<UnitEffect>.GetType("enablemovement")))
-                    {
-                        unit.moved = false; // doesnt work yet, later
-                    }
-                    if(unit.HasEffect(EnumCache<UnitEffect>.GetType("enableattack")))
-                    {
-                        unit.attacked = false;
-                    }
-                    unit.RemoveEffect(EnumCache<UnitEffect>.GetType("enablemovement"));
-                    unit.RemoveEffect(EnumCache<UnitEffect>.GetType("enableattack"));
-                }
             }
+        }
+
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(FloodCommand), nameof(FloodCommand.Execute))]
+        private static void FloodCommand_Execute(FloodCommand __instance, GameState state)
+        {
+            TileData tileData = state.Map.GetTile(__instance.Coordinates);
+            EnableUnit(tileData);
+        }
+
+        private static void EnableUnit(TileData tileData) // thats insane i know pls forgive (caused by polymod)
+        {
+            UnitState unit = tileData.unit;
+
+            if(unit == null)
+            {
+                return;
+            }
+            if(unit.HasEffect(EnumCache<UnitEffect>.GetType("enablemovement")))
+            {
+                unit.moved = false;
+            }
+            if(unit.HasEffect(EnumCache<UnitEffect>.GetType("enableattack")))
+            {
+                unit.attacked = false;
+            }
+            unit.RemoveEffect(EnumCache<UnitEffect>.GetType("enablemovement"));
+            unit.RemoveEffect(EnumCache<UnitEffect>.GetType("enableattack"));
         }
 
         [HarmonyPostfix]
@@ -491,6 +506,18 @@ namespace PolyPlus
             {
                 state.ActionStack.Add(new HealAction(__instance.PlayerId, healCoords, (ushort)__instance.Damage));
             }
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(HealOthersAction), nameof(HealOthersAction.Execute))]
+        private static void HealOthersAction_Execute(HealOthersAction __instance, GameState state)
+        {
+            TileData tileData = state.Map.GetTile(__instance.Coordinates);
+			if (tileData.unit == null || tileData.unit.owner != __instance.PlayerId || (!tileData.unit.IsDamaged(state) && !tileData.unit.HasEffect(UnitEffect.Poisoned)))
+			{
+				return;
+			}
+            state.ActionStack.Add(new HealAction(__instance.PlayerId, tileData.coordinates, 40));
         }
     }
 }
