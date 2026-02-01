@@ -7,6 +7,11 @@
 		"temple": {
 			"terrainRequirements": []
 		},
+		"road": {
+			"improvementAbilities":[
+				"+strictreq"
+			]
+		},
 		"fertilize": {
 			"cost": 5,
 			"terrainRequirements": [
@@ -20,7 +25,8 @@
 				}
 			],
 			"improvementAbilities": [
-				"consumed"
+				"consumed",
+				"strictreq"
 			],
 			"maxLevel": 0
 		},
@@ -40,7 +46,8 @@
 				}
 			],
 			"improvementAbilities": [
-				"consumed"
+				"consumed",
+				"strictreq"
 			],
 			"maxLevel": 0,
 			"idx": -1
@@ -267,7 +274,7 @@
 		},
 		"canal": {
 			"improvementAbilities": [
-				"+pontoondeflect"
+				"+strictreq"
 			]
 		},
 		"sanctuary": {

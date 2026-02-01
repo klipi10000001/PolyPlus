@@ -18,7 +18,6 @@
 				"aquacrop": 1.5
 			},
 			"improvementOverrides": {
-				"fertilize": "aquafertilize",
 				"port": "none",
 				"customshouse": "none"
 			},
