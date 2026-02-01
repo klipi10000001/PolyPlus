@@ -215,7 +215,7 @@ namespace PolyPlus
             // Ice / skate / slide / polarism
             bool canSlide =
                 settings.unitData.HasAbility(EnumCache<UnitAbility.Type>.GetType("slide")) ||
-                settings.playerState.availableTech.Contains(TechData.Type.Polarism);
+                settings.playerState.HasAbility(PlayerAbility.Type.Glide, settings.gameState);
 
             if (canSlide && __instance.terrain == TerrainData.Type.Ice)
             {
