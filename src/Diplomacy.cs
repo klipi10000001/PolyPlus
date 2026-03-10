@@ -64,7 +64,7 @@ namespace PolyPlus
 
             Il2CppSystem.Collections.Generic.List<TileData> area = gameState.Map.GetArea(position, range, true, false);
 
-            if (unitState.HasAbility(EnumCache<UnitAbility.Type>.GetType("revolt"), gameState)
+            if (unitState.HasAbility(EnumCache<UnitAbility.Type>.GetType("revolt"))
                 && gameState.TryGetPlayer(playerId, out PlayerState playerState))
             {
                 Il2CppSystem.Collections.Generic.List<WorldCoordinates> list = new Il2CppSystem.Collections.Generic.List<WorldCoordinates>();
@@ -85,7 +85,7 @@ namespace PolyPlus
                                 isInPeace = PlayerDiplomacyExtensions.HasPeaceWith(playerState, tileData.owner);
                                 if (!isInPeace)
                                 {
-                                    isInPeace = PlayerDiplomacyExtensions.HasBrokenPeaceWith(playerState, tileData.owner);
+                                    isInPeace = PlayerDiplomacyExtensions.HasCoolDownWith(playerState, tileData.owner);
                                 }
                             }
 

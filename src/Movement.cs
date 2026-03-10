@@ -1,4 +1,5 @@
 using HarmonyLib;
+using Il2CppSystem.Net;
 using Polytopia.Data;
 
 namespace PolyPlus
@@ -74,7 +75,7 @@ namespace PolyPlus
                 {
                     hasNoBridge = false;
                 }
-                if (hasNoBridge && !unitData.IsAquatic() && !unitState.HasAbility(UnitAbility.Type.Fly, gameState) && tile2.IsWater
+                if (hasNoBridge && !unitData.IsAquatic() && !unitState.HasAbility(UnitAbility.Type.Fly) && tile2.IsWater
                     && PlayerExtensions.HasAbility(playerState, EnumCache<PlayerAbility.Type>.GetType("waterembark"),gameState))
                 {
                     gameState.ActionStack.Add(new EmbarkAction(__instance.PlayerId, worldCoordinates));
@@ -97,6 +98,149 @@ namespace PolyPlus
                     unitState.attacked = false;
                 }
             }
+        }
+
+        private static int GetBaseTerrainCost(TileData tile, Data.UnitMovementType unitMovementType)
+        {
+            int cost = 10;
+            switch (unitMovementType)
+            {
+                case Data.UnitMovementType.Land:
+                    if(tile.terrain == TerrainData.Type.Forest)
+                    {
+                        cost *= 2;
+                    }
+                    else if(tile.terrain == TerrainData.Type.Mountain)
+                    {
+                        cost *= 100;
+                    }
+                    break;
+                case Data.UnitMovementType.Amphibious:
+                    break;
+                case Data.UnitMovementType.Water:
+                    break;
+                case Data.UnitMovementType.Air:
+                    break;
+                case Data.UnitMovementType.Sled:
+                    break;
+                default:
+                    break;
+            }
+
+            return cost;
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(TileData), nameof(TileData.GetMovementCost))]
+        private static bool TileData_GetMovementCost2(
+            ref int __result,
+            TileData __instance,
+            MapData map,
+            TileData fromTile,
+            PathFinderSettings settings)
+        {
+            const int BLOCKED   = 1000;
+            const int SLOW_COST = 30;
+            const int HARD_COST = 20;
+            const int TILE_COST = 10;
+            const int HALF_COST = 5;
+
+            if (settings.unit == null)
+            {
+                if (settings.shouldFollowTransportPaths && (__instance.HasRoad || __instance.hasRoute))
+                {
+                    __result = HALF_COST;
+                    return false;
+                }
+                __result = TILE_COST;
+                return false;
+            }
+            ImprovementData data = null;
+            if (__instance.improvement != null)
+            {
+                settings.gameState.GameLogicData.TryGetData(__instance.improvement.type, out data);
+            }
+            if (ActionUtils.WillUnitEmbark(settings.unit, __instance, settings.gameState) != ActionUtils.EmbarkStatus.None)
+            {
+                __result = BLOCKED;
+                return false;
+            }
+            if (!settings.shouldAllowOccupiedTiles && !settings.unitData.HasAbility(UnitAbility.Type.Sneak) && !settings.unitData.HasAbility(UnitAbility.Type.Hide) && !settings.unit.HasEffect(UnitEffect.Invisible))
+            {
+                foreach (TileData tileNeighbor in map.GetTileNeighbors(__instance.coordinates))
+                {
+                    if (tileNeighbor.unit != null && tileNeighbor.unit.owner != settings.playerState.Id
+                        && !settings.playerState.HasPeaceWith(tileNeighbor.unit.owner) &&
+                        !tileNeighbor.unit.HasEffect(UnitEffect.Invisible) && tileNeighbor.unit.leader == 0)
+                    {
+                        __result = BLOCKED;
+                        return false;
+                    }
+                }
+            }
+            if (settings.unitData.HasAbility(UnitAbility.Type.Fly))
+            {
+                __result = TILE_COST;
+                return false;
+            }
+            if (settings.unitData.HasAbility(UnitAbility.Type.Skate))
+            {
+                if (__instance.terrain == TerrainData.Type.Ice)
+                {
+                    __result = TILE_COST;
+                    return false;
+                }
+                __result = BLOCKED;
+                return false;
+            }
+            if (__instance.terrain  == TerrainData.Type.Ice &&
+                !settings.unitData.HasAbility(UnitAbility.Type.Skate) &&
+                settings.playerState.HasAbility(PlayerAbility.Type.Glide, settings.gameState))
+            {
+                __result = 9;
+                return false;
+            }
+            if (!__instance.IsWater && !__instance.HasEffect(TileData.EffectType.Flooded) &&
+                settings.unitData.HasAbility(UnitAbility.Type.Swim))
+            {
+                __result = BLOCKED;
+                return false;
+            }
+            if (__instance.terrain != TerrainData.Type.Mountain && settings.unitData.HasAbility(UnitAbility.Type.Creep))
+            {
+                __result = TILE_COST;
+                return false;
+            }
+            if (__instance.HasRoadTo(fromTile, settings.gameState, settings.unit.owner) &&
+                __instance.terrain != TerrainData.Type.Ice && !settings.unitData.HasAbility(UnitAbility.Type.Skate) &&
+                !settings.unitData.HasAbility(UnitAbility.Type.Creep) && !settings.unitData.HasAbility(UnitAbility.Type.Swim))
+            {
+                __result = HALF_COST;
+                return false;
+            }
+            if (__instance.improvement != null && data != null && data.HasAbility(ImprovementAbility.Type.Slow))
+            {
+                __result = BLOCKED;
+                return false;
+            }
+            if (__instance.terrain == TerrainData.Type.Forest || __instance.terrain == TerrainData.Type.Mountain)
+            {
+                __result = BLOCKED;
+                return false;
+            }
+            if (__instance.HasEffect(TileData.EffectType.Flooded) && settings.unit.UnitData.IsWaterBound())
+            {
+                __result = BLOCKED;
+                return false;
+            }
+            if (__instance.HasEffect(TileData.EffectType.Algae) && settings.unit.UnitData.IsLandBound())
+            {
+                __result = BLOCKED;
+                return false;
+            }
+
+            __result = TILE_COST;
+            return false;
         }
 
         [HarmonyPrefix]
@@ -137,7 +281,7 @@ namespace PolyPlus
             }
 
             if (!__instance.IsWater &&
-                unit.HasAbility(UnitAbility.Type.Carry, settings.gameState))
+                unit.HasAbility(UnitAbility.Type.Carry))
             {
                 __result = BLOCKED;
                 return false;
@@ -171,7 +315,8 @@ namespace PolyPlus
             // Fly / Creep
             if (unitData.HasAbility(UnitAbility.Type.Fly) ||
                 unitData.HasAbility(UnitAbility.Type.Creep) ||
-                unit.HasEffect(UnitEffect.Boosted))
+                unit.HasEffect(UnitEffect.Boosted) ||
+                unit.HasEffect(UnitEffect.Swift))
             {
                 __result = TILE_COST;
                 return false;
@@ -231,7 +376,14 @@ namespace PolyPlus
             // Swim units on land (Kill me why does swim still exist why does swim still exist why does
             // swoim stikl exist i actually manually type it and dont cntrlc cntrlv why does swim stikll exist)
             if (!__instance.IsWater &&
-                unitData.HasAbility(UnitAbility.Type.Swim))
+                unitData.HasAbility(UnitAbility.Type.Water))
+            {
+                __result *= 2;
+                return false;
+            }
+
+            if (!__instance.IsWater && !__instance.IsWetland() &&
+                unitData.HasAbility(UnitAbility.Type.Amphibious))
             {
                 __result *= 2;
                 return false;
@@ -244,7 +396,7 @@ namespace PolyPlus
         [HarmonyPatch(typeof(UnitDataExtensions), nameof(UnitDataExtensions.CanExplode))]
         private static bool UnitDataExtensions_CanExplode(ref bool __result, UnitState unit, GameState gameState)
         {
-            __result = unit.CanAttack() && unit.owner == gameState.CurrentPlayer && unit.HasAbility(UnitAbility.Type.Explode, gameState);
+            __result = unit.CanAttack() && unit.owner == gameState.CurrentPlayer && unit.HasAbility(UnitAbility.Type.Explode);
             return false;
         }
 
