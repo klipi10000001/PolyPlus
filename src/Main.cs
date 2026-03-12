@@ -1,7 +1,9 @@
-﻿using HarmonyLib;
+﻿using BepInEx.Logging;
+using HarmonyLib;
 using Newtonsoft.Json.Linq;
 using PolyPlus.Utils;
 using Polytopia.Data;
+using PolytopiaBackendBase.Common;
 using UnityEngine;
 
 namespace PolyPlus
@@ -9,10 +11,12 @@ namespace PolyPlus
     public static class Main
     {
         private static Color32 bloomColor = new Color32(255, 105, 225, 255);
-
-        public static void Load()
+        internal static ManualLogSource? modLogger;
+        public static void Load(ManualLogSource logger)
         {
+            modLogger = logger;
             PolyMod.Loader.AddPatchDataType("tileEffect", typeof(TileData.EffectType));
+            PolyMod.Loader.AddPatchDataType("unitEffect", typeof(UnitEffect));
             Harmony.CreateAndPatchAll(typeof(Main));
             Harmony.CreateAndPatchAll(typeof(ApiHandler));
             Harmony.CreateAndPatchAll(typeof(Diplomacy));
@@ -145,7 +149,7 @@ namespace PolyPlus
         [HarmonyPatch(typeof(GameLogicData), nameof(GameLogicData.CanBuild))]
         private static void GameLogicData_CanBuild(ref bool __result, GameLogicData __instance, GameState gameState, TileData tile, PlayerState playerState, ImprovementData improvement)
         {
-            if(improvement.HasAbility(EnumCache<ImprovementAbility.Type>.GetType("progresser")) && tile.improvement != null)
+            if(improvement.HasAbility(EnumCache<ImprovementAbility.Type>.GetType("overcapper")) && tile.improvement != null)
             {
                 if(Parser.improvementTerrainReq.ContainsKey(improvement.type))
                 {
@@ -154,7 +158,8 @@ namespace PolyPlus
                     {
                         if(req.improvement != ImprovementData.Type.None && tile.HasImprovement(req.improvement) && __instance.TryGetData(req.improvement, out ImprovementData requirementData))
                         {
-                            if(tile.improvement.level == requirementData.MaxLevel(playerState, gameState))
+                            if(tile.improvement.level == requirementData.MaxLevel(playerState, gameState) &&
+                                !tile.HasEffect(EnumCache<TileData.EffectType>.GetType("overcap")))
                             {
                                 __result = true;
                             }
@@ -198,25 +203,33 @@ namespace PolyPlus
                 }
             }
         }
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(BuildAction), nameof(BuildAction.Execute))]
+        private static bool BuildAction_Execute(BuildAction __instance, GameState gameState)
+        {
+            TileData tileData = gameState.Map.GetTile(__instance.Coordinates); // So, in order to enable movement for unit later I added an effect !
+            UnitState unit = tileData.unit;
+            if(unit != null && __instance.Type == ImprovementData.Type.Canal)
+            {
+                if(!unit.moved)
+                {
+                    Console.Write("ADDDING ENABLE MOVEMENT");
+                    unit.AddEffect(EnumCache<UnitEffect>.GetType("enablemovement"));
+                }
+                if(!unit.attacked)
+                {
+                    unit.AddEffect(EnumCache<UnitEffect>.GetType("enableattack"));
+                }
+            }
+            return true;
+        }
 
         [HarmonyPostfix]
         [HarmonyPatch(typeof(BuildAction), nameof(BuildAction.Execute))]
-        private static void BuildAction_Execute(BuildAction __instance, GameState gameState)
+        private static void BuildAction_Execute_Postfix(BuildAction __instance, GameState gameState)
         {
             if (gameState.GameLogicData.TryGetData(__instance.Type, out ImprovementData improvementData))
             {
-                if(improvementData.HasAbility(EnumCache<ImprovementAbility.Type>.GetType("progresser")))
-                {
-                    TileData tile = gameState.Map.GetTile(__instance.Coordinates);
-                    TileData cityTile = gameState.Map.GetTile(tile.rulingCityCoordinates);
-                    if (cityTile.HasImprovement(ImprovementData.Type.City))
-                    {
-                        gameState.TryGetPlayer(cityTile.owner, out PlayerState playerState);
-                        ActionUtils.RemoveScore(playerState, ScoreSheet.cityXPScore * 3);
-                        cityTile.improvement.AddPopulation(-3);
-                    }
-                }
-
                 if (improvementData.HasAbility(EnumCache<ImprovementAbility.Type>.GetType("embarkmanual")))
                 {
                     gameState.ActionStack.Add(new EmbarkAction(__instance.PlayerId, __instance.Coordinates));
@@ -235,6 +248,35 @@ namespace PolyPlus
                     }
                 }
             }
+        }
+
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(FloodCommand), nameof(FloodCommand.Execute))]
+        private static void FloodCommand_Execute(FloodCommand __instance, GameState state)
+        {
+            TileData tileData = state.Map.GetTile(__instance.Coordinates);
+            EnableUnit(tileData);
+        }
+
+        private static void EnableUnit(TileData tileData) // thats insane i know pls forgive (caused by polymod)
+        {
+            UnitState unit = tileData.unit;
+
+            if(unit == null)
+            {
+                return;
+            }
+            if(unit.HasEffect(EnumCache<UnitEffect>.GetType("enablemovement")))
+            {
+                unit.moved = false;
+            }
+            if(unit.HasEffect(EnumCache<UnitEffect>.GetType("enableattack")))
+            {
+                unit.attacked = false;
+            }
+            unit.RemoveEffect(EnumCache<UnitEffect>.GetType("enablemovement"));
+            unit.RemoveEffect(EnumCache<UnitEffect>.GetType("enableattack"));
         }
 
         [HarmonyPostfix]
@@ -269,6 +311,10 @@ namespace PolyPlus
                         CommandUtils.AddCommand(gameState, __result, new BuildCommand(player.Id, improvementData.type, tile.coordinates), includeUnavailable);
                     }
                 }
+                if(improvementData.type == ImprovementData.Type.Canal && tile.isFloodable() && gameState.GameLogicData.CanBuild(gameState, tile, player, improvementData) && !unit.CanBuild()) // Canal building after moving
+                {
+                    CommandUtils.AddCommand(gameState, __result, new BuildCommand(player.Id, improvementData.type, tile.coordinates), includeUnavailable);
+                }
             }
         }
 
@@ -290,41 +336,189 @@ namespace PolyPlus
             }
         }
 
+        private static void RemovePop(GameState gameState, TileData tile, byte playerId, int population)
+        {
+            tile.RemoveEffect(EnumCache<TileData.EffectType>.GetType("blooming"));
+            if(tile.owner == 0)
+                return;
+
+            TileData cityTile = gameState.Map.GetTile(tile.rulingCityCoordinates);
+            for (int i = 0; i < population; i++)
+            {
+                if(cityTile.HasImprovement(ImprovementData.Type.City))
+                    gameState.ActionStack.Add(new DecreasePopulationAction(playerId, cityTile.coordinates, 200));
+            }
+        }
+
         [HarmonyPostfix]
         [HarmonyPatch(typeof(ClearTileEffectAction), nameof(ClearTileEffectAction.Execute))]
         private static void ClearTileEffectAction_Execute(ClearTileEffectAction __instance, GameState gameState)
         {
             TileData tile = gameState.Map.GetTile(__instance.Target);
-            if(__instance.Effect == TileData.EffectType.Algae && tile != null && tile.HasEffect(EnumCache<TileData.EffectType>.GetType("blooming")))
-            {
+            if(tile == null) return;
+
+            bool hasBloomingAlgae = __instance.Effect == TileData.EffectType.Algae
+                && tile.HasEffect(EnumCache<TileData.EffectType>.GetType("blooming"));
+            bool hasOvercap = __instance.Effect == EnumCache<TileData.EffectType>.GetType("overcap");
+            if(hasBloomingAlgae)
                 tile.RemoveEffect(EnumCache<TileData.EffectType>.GetType("blooming"));
-                if(tile.owner != 0)
+            if(hasBloomingAlgae || hasOvercap)
+                RemovePop(gameState, tile, __instance.PlayerId, 1);
+
+            // if(__instance.Effect == EnumCache<TileData.EffectType>.GetType("overcap")) // I tried to create more generic solution
+            // {
+                // Normally I would want to make so all overcap improvements get their pop reward from orig impr level up reward.
+                // if(tile.owner != 0) //  && tile.improvement != null && gameState.GameLogicData.TryGetData(tile.improvement.type, out ImprovementData improvementData)
+                // {
+                    // TileData city = gameState.Map.GetTile(tile.rulingCityCoordinates);
+                    // if(city.HasImprovement(ImprovementData.Type.City))
+                        // gameState.ActionStack.Add(new DecreasePopulationAction(__instance.PlayerId, city.coordinates, 200));
+                        // int popReward = (int)improvementData.GetPopulationReward();
+                        // foreach (var item in improvementData.growthRewards)
+                        // {
+                        //     popReward += item.population;
+                        // }
+                        // for (int i = 0; i < popReward; i++)
+                        // {
+                        //     gameState.ActionStack.Add(new DecreasePopulationAction(__instance.PlayerId, city.coordinates, 200));
+                        // }
+                // }
+            // }
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(Tile), nameof(Tile.Render), typeof(MapRenderContext))]
+        private static void Tile_Render(Tile __instance, MapRenderContext mapRenderContext )
+        {
+            TileRender(__instance);
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(Tile), nameof(Tile.Render), typeof(MapRenderContext), typeof(SkinVisualsTransientData))]
+        private static void Tile_Render(Tile __instance, MapRenderContext ctx, SkinVisualsTransientData transientSkinningData)
+        {
+            TileRender(__instance);
+        }
+
+        private static void TileRender(Tile tile)
+        {
+            TileData tileData = tile.data;
+            if(tileData.HasEffect(EnumCache<TileData.EffectType>.GetType("blooming")))
+            {
+                if(tile.algaeRenderer != null)
                 {
-                    TileData city = gameState.Map.GetTile(tile.rulingCityCoordinates);
-                    if(city.HasImprovement(ImprovementData.Type.City))
+                    tile.algaeRenderer.color = bloomColor;
+
+                    if(tile.algaeRenderer.spriteRenderer != null)
                     {
-                        gameState.ActionStack.Add(new DecreasePopulationAction(__instance.PlayerId, city.coordinates, 200));
+                        tile.algaeRenderer.spriteRenderer.color = bloomColor;
+                    }
+                }
+            }
+
+            if(tileData.improvement != null && tileData.HasEffect(EnumCache<TileData.EffectType>.GetType("overcap")))
+            {
+                int newLevel =  tileData.improvement.level + 2; // Visual level != Logic level. Aka, level 0 in Logic is 1 in Visual. So instead of increment i have to add 2.
+                Console.Write(newLevel);
+                Sprite? sprite = PolyMod.Registry.GetSprite(EnumCache<ImprovementData.Type>.GetName(tileData.improvement.type), level: newLevel);
+                if (sprite != null)
+                {
+                    tile.improvement.Sprite = sprite;
+                }
+            }
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(DestroyImprovementAction), nameof(DestroyImprovementAction.Execute))]
+        private static bool DestroyImprovementAction_Execute(DestroyImprovementAction __instance, GameState state)
+        {
+            TileData tile = state.Map.GetTile(__instance.Coordinates);
+            TileData.EffectType overcapEffect = EnumCache<TileData.EffectType>.GetType("overcap");
+            if(tile.HasEffect(overcapEffect))
+            {
+                __instance.AddSubAction(new ClearTileEffectAction(
+                    __instance.PlayerId,
+                    __instance.Coordinates,
+                    overcapEffect,
+                    false
+                ));
+            }
+            return true;
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(StartMatchAction), nameof(StartMatchAction.ExecuteDefault))]
+        private static void StartMatchAction_ExecuteDefault(GameState gameState)
+        {
+            if (gameState.PlayerStates != null && gameState.PlayerStates.Count > 0)
+            {
+                foreach (var playerState in gameState.PlayerStates)
+                {
+                    if (playerState.tribe == TribeType.Aquarion && playerState.startTile != WorldCoordinates.NULL_COORDINATES)
+                    {
+                        TileData startingTile = gameState.Map.GetTile(playerState.startTile);
+                        startingTile.AddEffect(TileData.EffectType.Flooded);
                     }
                 }
             }
         }
 
         [HarmonyPostfix]
-        [HarmonyPatch(typeof(Tile), nameof(Tile.Render))]
-        private static void Tile_Render(Tile __instance)
+        [HarmonyPatch(typeof(TerrainRenderer), nameof(TerrainRenderer.UpdateGraphics))]
+        private static void TerrainRenderer_UpdateGraphics(TerrainRenderer __instance, Tile tile)
         {
-            if(__instance.data.HasEffect(EnumCache<TileData.EffectType>.GetType("blooming")))
-            {
-                if(__instance.algaeRenderer != null)
-                {
-                    __instance.algaeRenderer.color = bloomColor;
+            TribeType tribe = GameManager.GameState.GameLogicData.GetTribeTypeFromStyle(tile.data.climate);
+            SkinType skinType = tile.data.Skin;
 
-                    if(__instance.algaeRenderer.spriteRenderer != null)
-                    {
-                        __instance.algaeRenderer.spriteRenderer.color = bloomColor;
-                    }
+            if (tribe == TribeType.Aquarion && tile.data.terrain == Polytopia.Data.TerrainData.Type.Mountain)
+            {
+                string style = skinType != SkinType.Default ? EnumCache<SkinType>.GetName(skinType) : EnumCache<TribeType>.GetName(tribe);
+                Sprite? sprite = PolyMod.Registry.GetSprite(EnumCache<Polytopia.Data.TerrainData.Type>.GetName(Polytopia.Data.TerrainData.Type.Field), style);
+                if (sprite != null)
+                {
+                    __instance.spriteRenderer.Sprite = sprite;
                 }
             }
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(CaptureCityAction), nameof(CaptureCityAction.ExecuteDefault))]
+        private static void CaptureCityAction_ExecuteDefault(CaptureCityAction __instance, GameState gameState)
+        {
+            if (!gameState.TryGetPlayer(__instance.PlayerId, out PlayerState playerState))
+                return;
+            if (playerState.tribe == TribeType.Aquarion && playerState.startTile != WorldCoordinates.NULL_COORDINATES)
+            {
+                TileData tile = gameState.Map.GetTile(__instance.Coordinates);
+                tile.Flood(playerState);
+            }
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(AttackAction), nameof(AttackAction.Execute))]
+        private static void AttackAction_Execute(AttackAction __instance, GameState state) // It also heals on retal, so i need to handle ts.
+        {
+            WorldCoordinates healCoords = __instance.Origin;
+            // if(__instance.ShouldMoveToTarget)
+            //     healCoords = __instance.Target;
+
+            TileData tile = state.Map.GetTile(healCoords);
+            if(tile.unit != null && tile.unit.HasAbility(EnumCache<UnitAbility.Type>.GetType("absorb")))
+            {
+                state.ActionStack.Add(new HealAction(__instance.PlayerId, healCoords, (ushort)__instance.Damage));
+            }
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(HealOthersAction), nameof(HealOthersAction.Execute))]
+        private static void HealOthersAction_Execute(HealOthersAction __instance, GameState state)
+        {
+            TileData tileData = state.Map.GetTile(__instance.Coordinates);
+			if (tileData.unit == null || tileData.unit.owner != __instance.PlayerId || (!tileData.unit.IsDamaged(state) && !tileData.unit.HasEffect(UnitEffect.Poisoned)))
+			{
+				return;
+			}
+            state.ActionStack.Add(new HealAction(__instance.PlayerId, tileData.coordinates, 40));
         }
     }
 }

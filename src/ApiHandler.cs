@@ -11,10 +11,10 @@ namespace PolyPlus
         [HarmonyPatch(typeof(GameLogicData), nameof(GameLogicData.MeetsRequirement))]
         public static bool MeetsRequirement(ref bool __result, GameLogicData __instance, TileData tile, ImprovementData improvement, PlayerState playerState, GameState gameState)
 		{
-            bool hasResourceRequirement = false;
+			bool hasTerrainRequirement = false;
 			bool meetsTerrainRequirement = false;
 
-            bool hasTerrainRequirement = false;
+            bool hasResourceRequirement = false;
 			bool meetsResourceRequirement = false;
 
             bool hasImprovementRequirement = false;
@@ -49,11 +49,21 @@ namespace PolyPlus
 						}
 						else
 						{
-							if (tile.IsWater && terrainRequirements.terrain.type == TerrainData.Type.Field && improvement.type != ImprovementData.Type.Road && playerState.HasAbility(PlayerAbility.Type.Pontoon, gameState))
+							if (
+								tile.IsWater &&
+								terrainRequirements.terrain.type == TerrainData.Type.Field &&
+								!improvement.HasAbility(EnumCache<ImprovementAbility.Type>.GetType("strictreq")) &&
+								playerState.HasAbility(PlayerAbility.Type.Pontoon, gameState)
+							)
 							{
 								meetsTerrainRequirement = true;
 							}
-							if (tile.terrain == TerrainData.Type.Forest && terrainRequirements.terrain.type == TerrainData.Type.Field && playerState.HasAbility(PlayerAbility.Type.Treehouse, gameState))
+							if (
+							    tile.terrain == TerrainData.Type.Forest &&
+						        terrainRequirements.terrain.type == TerrainData.Type.Field &&
+						        !improvement.HasAbility(EnumCache<ImprovementAbility.Type>.GetType("strictreq")) &&
+						        playerState.HasAbility(PlayerAbility.Type.Treehouse, gameState)
+						    )
 							{
 								meetsTerrainRequirement = true;
 							}

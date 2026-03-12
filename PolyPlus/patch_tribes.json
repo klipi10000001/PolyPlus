@@ -1,0 +1,167 @@
+{
+	"tribeData": {
+		"aimo": {
+			"startingUnit": "mindbender",
+			"startingStars": 5,
+			"startingTech": [
+				"basic",
+				"meditation"
+			]
+		},
+		"aquarion": {
+			"techOverrides": {
+				"navigation": "aquanavigation",
+				"embarquatism": "aquatism",
+				"embarksailing": "marinelife"
+			},
+			"resourceModifier": {
+				"aquacrop": 1.5
+			},
+			"improvementOverrides": {
+				"port": "none",
+				"customshouse": "none"
+			},
+			"tribeAbilities": [],
+			"startingStars": 5
+		},
+		"bardur": {
+			"terrainModifier": {
+				"forest": 1.5
+			},
+			"startingStars": 3
+		},
+		"elyrion": {
+			"startingStars": 5,
+			"techOverrides": {
+				"forestry": "elyforestry"
+			},
+			"tribeAbilities": [
+				"-rainbowvision"
+			],
+			"improvementOverrides": {
+				"sawmill": "none"
+			},
+			"preview": [
+				{
+					"x": 0,
+					"y": 0,
+					"unitType": "treant",
+					"terrainType": "field"
+				},
+				{
+					"x": 0,
+					"y": 1,
+					"unitType": "polytaur",
+					"terrainType": "forest"
+				}
+			]
+		},
+		"hoodrick": {
+			"startingStars": 5
+		},
+		"imperius": {
+			"startingStars": 3
+		},
+		"kickoo": {
+			"startingTech": [
+				"basic",
+				"fishingplus"
+			],
+			"startingStars": 3
+		},
+		"luxidoor": {
+			"startingResource": [],
+			"bonus": 0,
+			"tribeAbilities": [
+				"citypark"
+			],
+			"startingStars": 5
+		},
+		"oumaji": {
+			"terrainModifier": {
+				"forest": 0.2,
+				"mountain":0.5,
+				"water": 0.5
+			},
+			"resourceModifier": {
+				"game": 1,
+				"crop": 0.5,
+				"fruit": 1.2
+			},
+			"startingStars": 5
+		},
+		"quetzali": {
+			"startingStars": 5
+		},
+		"vengir": {
+			"startingStars": 5
+		},
+		"xinxi": {
+			"startingStars": 5
+		},
+		"yadakk": {
+			"startingStars": 5
+		},
+		"zebasi": {
+			"startingStars": 3
+		},
+		"polaris": {
+			"improvementOverrides": {
+				"customshouse": "none"
+			},
+			"techOverrides": {
+				"embarksailing": "frostwork",
+				"navigation": "polarwarfare",
+				"embarquatism": "polarism",
+				"aquaculture" : "sledding"
+			},
+			"preview": [
+				{
+					"x": 0,
+					"y": -2,
+					"terrainType": "ice",
+					"unitType": "yuukwi"
+				}
+			],
+			"startingStars": 5
+		},
+		"cymanti": {
+			"startingTech": [
+				"+cymbase"
+			],
+			"unitOverrides": {
+				"mindbender": "mindbender",
+				"rammership": "raychi"
+			},
+			"improvementOverrides": {
+				"market": "market",
+				"port": "algae",
+				"customshouse": "clathrus"
+			},
+			"techOverrides": {
+				"roads": "cymroads",
+				"construction": "recycling",
+				"chivalry": "shock",
+				"embarksailing": "cymsailing",
+				"meditation": "meditation",
+				"embarquatism": "aquatism"
+			},
+			"startingUnit": "warrior",
+			"preview": [
+				{
+					"x": -1,
+					"y": -2,
+					"unitType": "raychi",
+					"terrainType": "water"
+				},
+				{
+					"x": 2,
+					"y": -1,
+					"unitType": "boomchi",
+					"terrainType": "water"
+				}
+			],
+			"startingStars": 5
+		}
+	}
+}

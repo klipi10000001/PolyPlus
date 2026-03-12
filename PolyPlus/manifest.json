@@ -1,12 +1,12 @@
 {
 	"id": "polyplus",
-	"version": "1.4.0",
-	"authors": ["Coding by JohnKlipi, Balance by MCompany, Sprites by Rastrapies and Jam's Son"],
+	"version": "1.5.0",
+	"authors": ["Coding by JohnKlipi, Balance by MCompany, Sprites by Rastrapies, Jam's Son and Bananique"],
     "dependencies": [
         {
             "id": "polytopia",
-            "min": "2.15.1",
-            "max": "2.15.2"
+            "min": "2.16.3",
+            "max": "2.16.4"
         }
     ]
 }

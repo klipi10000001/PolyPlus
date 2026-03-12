@@ -336,5 +336,61 @@
 	"tooltip_ability_revolt": {
 		"English": "This unit can enter enemy cities to incite revolts.",
 		"Russian": "Этот отряд может заходить во вражеские города и устраивать восстания."
+	},
+	"technology_names_elyforestry": {
+		"English": "Forestry",
+		"Russian": "Лесное хозяйство"
+	},
+	"player_abilities_treehouse": {
+		"English": "Tree Houses",
+		"Russian": "Домики на Деревьях"
+	},
+	"tooltip_ability_treehouse": {
+		"English": "Land improvements can be built on forests.",
+		"Russian": "Строения для суши можно строить на лесах."
+	},
+	"technology_names_naturalharmony": {
+		"English": "Natural Harmony",
+		"Russian": "Природная гармония"
+	},
+	"unit_names_treant": {
+		"English": "Sylvan Warden",
+		"Russian": "Хранитель Чащи"
+	},
+	"unit_names_treant__darkelf": {
+		"English": "Thorn Demon",
+		"Russian": "Терновый Демон"
+	},
+	"unit_abilities_foreststealth": {
+		"English": "Forest Stealth",
+		"Russian": "Скрытность в лесу"
+	},
+	"tooltip_ability_foreststealth": {
+		"English": "Unit turns invisible in forests.",
+		"Russian": "Отряд становится невидимым в лесах."
+	},
+	"unit_abilities_absorb": {
+		"English": "ABSORB",
+		"Russian": "ПОГЛОЩЕНИЕ"
+	},
+	"tooltip_ability_absorb": {
+		"English": "This unit restores health equal to the damage it dealt to the opponent.",
+		"Russian": "Этот отряд восстанавливает количество здоровья, равное урону, нанесённому противнику."
+	},
+	"building_names_enchantforest": {
+		"English": "Enchant Forest",
+		"Russian": "Зачаровать лес"
+	},
+	"building_names_enchantforest__darkelf": {
+		"English": "Curse Forest",
+		"Russian": "Проклясть лес"
+	},
+	"unit_abilities_autoheal": {
+		"English": "AUTOHEAL",
+		"Russian": "АВТОЛЕЧЕНИЕ"
+	},
+	"tooltip_ability_autoheal": {
+		"English": "This unit heals itself and other allied units around when moving.",
+		"Russian": "Этот отряд лечит себя и союзнические отряды вокруг когда передвигается."
 	}
 }

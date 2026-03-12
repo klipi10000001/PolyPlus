@@ -1,0 +1,311 @@
+{
+	"techData": {
+		"cymbase": {
+			"improvementUnlocks": [
+				"makebloom"
+			],
+			"cost": 0,
+			"idx": -1
+		},
+		"recycling": {
+			"abilityUnlocks": [
+				"-microbes",
+				"-decompose",
+				"+destroy"
+			],
+			"improvementUnlocks": [
+				"+mycogrove"
+			]
+		},
+		"basic": {
+			"techUnlocks": [
+				"organization",
+				"climbing",
+				"fishingplus",
+				"hunting",
+				"freespirit"
+			],
+			"taskUnlocks": [
+				"+wealth",
+				"+genius"
+			],
+			"improvementUnlocks": [
+				"+instantembark"
+			],
+			"abilityUnlocks": [
+				"+disband"
+			],
+			"movementUnlocks": {
+				"water": 1
+			}
+		},
+		"riding": {
+			"techUnlocks": [
+				"chivalry"
+			],
+			"cost": 2
+		},
+		"freespirit": {
+			"improvementUnlocks": [
+				"+guild"
+			],
+			"techUnlocks": [
+				"roads",
+				"shields"
+			],
+			"abilityUnlocks": [
+				"-disband"
+			],
+			"cost": 1
+		},
+		"organization": {
+			"techUnlocks": [
+				"-shields",
+				"+riding"
+			]
+		},
+		"meditation": {
+			"improvementUnlocks": [
+				"-mountaintemple"
+			],
+			"unitUnlocks": [
+				"+mindbender"
+			],
+			"abilityUnlocks": [
+				"+discipline"
+			]
+		},
+		"philosophy": {
+			"unitUnlocks": [
+				"-mindbender"
+			],
+			"taskUnlocks": [
+				"-genius"
+			]
+		},
+		"aquatism": {
+			"improvementUnlocks": [
+				"customshouse"
+			]
+		},
+		"embarquatism": {
+			"improvementUnlocks": [
+				"customshouse"
+			],
+			"abilityUnlocks": [
+				"dashembark"
+			],
+			"cost": 3,
+			"idx": -1
+		},
+		"spiritualism": {
+			"improvementUnlocks": [
+				"-foresttemple"
+			]
+		},
+		"construction": {
+			"improvementUnlocks": [
+				"-burnforest",
+				"+fertilize"
+			]
+		},
+		"navigation": {
+			"unitUnlocks": [
+				"bombership",
+				"rammership"
+			],
+			"movementUnlocks": {
+				"ocean": 1
+			},
+			"improvementUnlocks": [
+				"-starfishing",
+				"-watertemple"
+			],
+			"cost": 3
+		},
+		"fishing": {
+			"improvementUnlocks": [
+				"-port"
+			],
+			"movementUnlocks": {}
+		},
+		"aquaculture": {
+			"techUnlocks": [
+				"embarquatism"
+			],
+			"improvementUnlocks": [
+				"harvestaquacrop",
+				"port"
+			],
+			"unitUnlocks": [
+				"-rammership"
+			],
+			"cost": 2
+		},
+		"embarksailing": {
+			"techUnlocks": [
+				"navigation"
+			],
+			"abilityUnlocks": [
+				"waterembark"
+			],
+			"unitUnlocks": [
+				"scoutship"
+			],
+			"cost": 2,
+			"idx": -1
+		},
+		"riding2": {
+			"techUnlocks": [
+				"spearing"
+			],
+			"cost": 2
+		},
+		"freediving": {
+			"techUnlocks": [
+				"roads",
+				"shields"
+			],
+			"improvementUnlocks": [
+				"temple"
+			],
+			"abilityUnlocks": [
+				"-disband"
+			],
+			"movementUnlocks": {
+				"ocean": 0
+			},
+			"cost": 1
+		},
+		"cymroads": {
+			"techUnlocks": [
+				"trade"
+			],
+			"unitUnlocks": [
+				"shaman"
+			],
+			"improvementUnlocks": [
+				"mycelium"
+			],
+			"cost": 2,
+			"idx": -1
+		},
+		"spearing": {
+			"abilityUnlocks": [
+				"destroy"
+			],
+			"unitUnlocks": [
+				"tridention"
+			],
+			"cost": 3
+		},
+		"sledding": {
+			"techUnlocks": [
+				"polarism"
+			],
+			"unitUnlocks": [
+				"battlesled"
+			],
+			"improvementUnlocks": [
+				"harvestaquacrop"
+			],
+			"cost": 2
+		},
+		"frostwork": {
+			"techUnlocks": [
+				"navigation"
+			],
+			"unitUnlocks": [
+				"mooni"
+			],
+			"improvementUnlocks": [
+				"outpost"
+			],
+			"cost": 2
+		},
+		"polarwarfare": {
+			"unitUnlocks": [
+				"icefortress",
+				"yuukwi"
+			],
+			"improvementUnlocks": []
+		},
+		"polarism": {
+			"improvementUnlocks": []
+		},
+		"hydrology": {
+			"techUnlocks": [
+				"aquatism"
+			],
+			"improvementUnlocks":[
+				"+harvestaquacrop"
+			],
+			"unitUnlocks": [
+				"-boomchi"
+			]
+		},
+		"fishingplus": {
+			"techUnlocks": [
+				"embarksailing",
+				"aquaculture"
+			],
+			"improvementUnlocks": [
+				"fishing"
+			],
+			"cost": 1,
+			"idx": -1
+		},
+		"cymsailing": {
+			"unitUnlocks": [
+				"boomchi"
+			],
+			"techUnlocks": [
+				"navigation"
+			],
+			"movementUnlocks": {
+				"water": 1
+			},
+			"cost": 2,
+			"idx": -1
+		},
+		"marinelife": {
+			"movementUnlocks": {
+				"ocean": 2
+			}
+		},
+		"aquanavigation": {
+			"unitUnlocks": [
+				"bombership"
+			],
+			"cost": 3,
+			"idx": -1 
+		},
+		"waterways": {
+			"improvementUnlocks": [
+				"atoll"
+			]
+		},
+		"trade": {
+			"taskUnlocks": []
+		},
+		"aquabase": {
+			"improvementUnlocks": [
+				"canal"
+			]
+		},
+		"elyforestry": {
+			"techUnlocks": [
+				"mathematics"
+			],
+			"improvementUnlocks": [
+				"sanctuary",
+				"enchantforest"
+			],
+			"abilityUnlocks": [
+				"treehouse"
+			],
+			"cost": 2,
+			"idx": -1
+		}
+	}
+}
