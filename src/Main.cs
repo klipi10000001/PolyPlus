@@ -39,6 +39,23 @@ public static class Main
         }
     }
 
+    [HarmonyPrefix]
+    [HarmonyPatch(typeof(ActionUtils), nameof(ActionUtils.OnRevealLighthouseTile))]
+    public static bool OnRevealLighthouseTile(GameState gameState, PlayerState playerState, WorldCoordinates tile)
+    {
+        gameState.CheckTask(playerState, TaskData.Type.ExploreLighthouses);
+        ActionUtils.EnableTask(gameState, playerState, TaskData.Type.ExploreLighthouses);
+        return false;
+    }
+
+    [HarmonyPrefix]
+    [HarmonyPatch(typeof(MapGenerator), nameof(MapGenerator.AddPostTerrainCities))]
+    public static bool AddPostTerrainCities(MapGenerator __instance, MapData map, int maxCityCount)
+    {
+        MapHelper.PostTerrainVillages(__instance, map, maxCityCount);
+        return false;
+    }
+
     [HarmonyPostfix]
     [HarmonyPatch(typeof(MapGenerator), nameof(MapGenerator.SetTileAsCapital))]
     private static void MapGenerator_SetTileAsCapital(GameState gameState, PlayerState playerState, TileData tile)
@@ -50,17 +67,8 @@ public static class Main
         }
 
         tile.improvement.production = 2;
-        tile.improvement.baseScore += 250;
+        tile.improvement.baseScore += 50;
         tile.improvement.AddReward(CityReward.Park);
-    }
-
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(ActionUtils), nameof(ActionUtils.OnRevealLighthouseTile))]
-    public static bool OnRevealLighthouseTile(GameState gameState, PlayerState playerState, WorldCoordinates tile)
-    {
-        gameState.CheckTask(playerState, TaskData.Type.ExploreLighthouses);
-        ActionUtils.EnableTask(gameState, playerState, TaskData.Type.ExploreLighthouses);
-        return false;
     }
 
     [HarmonyPrefix]

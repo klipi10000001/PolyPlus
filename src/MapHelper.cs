@@ -148,4 +148,38 @@ public static class MapHelper
         return finalTiles;
     }
 
+    public static void PostTerrainVillages(MapGenerator generator, MapData map, int maxCityCount)
+    {
+        var allValidCitySpotIndices = generator.GetAllValidCitySpotIndices(map);
+        var cityTotal = 0;
+        var playerCapitals = map.Tiles.Where(it => it.improvement?.type == ImprovementData.Type.City && it.capitalOf != 0).ToList();
+        var distances = new Dictionary<TileData, int>();
+        foreach (var capital in playerCapitals) distances[capital] = 1;
+        var cityIndex = -1;
+        while (allValidCitySpotIndices.Count > 0 && cityTotal < maxCityCount)
+        {
+            cityIndex++;
+            if (cityIndex >= playerCapitals.Count) cityIndex = 0;
+            var currentCity = playerCapitals[cityIndex];
+            while (true)
+            {
+                var tiles = GetTilesAtDistance(map, currentCity.coordinates, distances[currentCity] + 2)
+                    .Where(it => allValidCitySpotIndices.Contains(map.GetTileIndex(it.coordinates)))
+                    .ToList();
+                if (tiles.Count <= 0) 
+                {
+                    distances[currentCity]++;
+                    continue;
+                }
+                var newCityTile = tiles[generator.random.Range(0, tiles.Count)];
+                generator.SetTileAsCity(newCityTile);
+                cityTotal++;
+                foreach (var tile in GetTilesWithinDistance(map, newCityTile.coordinates, 2))
+                {
+                    allValidCitySpotIndices.Remove(map.GetTileIndex(tile.coordinates));
+                }
+                break;
+            }
+        }
+    }
 }
