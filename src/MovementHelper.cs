@@ -3,6 +3,105 @@ using Polytopia.Data;
 namespace PolyPlus;
 public static class MovementHelper
 {
+	public static bool IsTileAccessible(TileData fromTile, TileData toTile, PathFinderSettings settings)
+	{
+		var alliedTile = toTile.owner == settings.playerState.Id || settings.playerState.HasPeaceWith(toTile.owner);
+		if ((!settings.shouldAllowAlliesTiles || !settings.playerState.HasPeaceWith(toTile.owner)) &&
+			!settings.shouldAllowEnemyTiles &&
+			PlayerState.AreDifferentPlayers(toTile.owner, settings.playerState.Id))
+		{
+			return false;
+		}
+		if (!toTile.GetExplored(settings.playerState.Id))
+		{
+			return false;
+		}
+		var unit = toTile.GetUnit(settings.gameState, settings.playerState.Id);
+		if (!settings.shouldAllowOccupiedTiles && unit != null && unit.owner != settings.playerState.Id && !settings.playerState.HasPeaceWith(unit.owner))
+		{
+			if (settings.unit == null || !settings.unit.HasAbility(UnitAbility.Type.Hide))
+			{
+				return false;
+			}
+		}
+		if (settings.unitData != null && settings.unitData.HasAbility(UnitAbility.Type.Fly))
+		{
+			return true;
+		}
+		if (toTile.improvement != null && settings.gameState.GameLogicData.TryGetData(toTile.improvement.type, out var data) && data != null && data.HasAbility(ImprovementAbility.Type.Bridge))
+		{
+			var flag2 = settings.allowedTerrain.Contains(toTile.terrain);
+			if (data.type == ImprovementData.Type.Bridge && !flag2)
+			{
+				var direction = WorldCoordinates.GetDirection(toTile.coordinates, fromTile.coordinates);
+				var nonAllowedBridgeDirection = toTile.GetNonAllowedBridgeDirection(settings.gameState, settings.playerState);
+				if (direction == nonAllowedBridgeDirection || direction.Opposite() == nonAllowedBridgeDirection)
+				{
+					return false;
+				}
+			}
+			return true;
+		}
+		if (toTile.IsWater)
+		{
+			if (toTile.IsWetland() && settings.allowedTerrain.Contains(TerrainData.Type.Wetland))
+			{
+				return true;
+			}
+			if (settings.unit != null && settings.isRequiredToUsePortToGoIntoWater) 
+			{
+				if (ActionUtils.WillUnitEmbark(settings.unit, toTile, settings.gameState) !=
+					ActionUtils.EmbarkStatus.Embark)
+				{
+					return false;
+				}
+			}
+			else if (fromTile.IsLand && !fromTile.IsWetland() && !alliedTile && settings.isRequiredToUsePortToGoIntoWater)
+			{
+				return false;
+			}
+		}
+		if (toTile.HasImprovement(ImprovementData.Type.City))
+		{
+			return true;
+		}
+		if (toTile.matchesAnyTerrain(settings.allowedTerrain))
+		{
+			return true;
+		}
+		return false;
+	}
+	public static ActionUtils.EmbarkStatus WillUnitEmbark(UnitState? unit, TileData targetTile, GameState gameState)
+	{
+		if (unit == null || unit.HasAbility(UnitAbility.Type.Fly))
+		{
+			return ActionUtils.EmbarkStatus.None;
+		}
+		if (targetTile.IsWater)
+		{
+			if (!unit.UnitData.IsAquatic() &&
+				!unit.HasFollower() &&
+				!unit.HasLeader())
+			{
+				gameState.TryGetPlayer(unit.owner, out var playerState);
+				if (!ActionUtils.CanPlayerEmbark(gameState, playerState))
+				{
+					return ActionUtils.EmbarkStatus.None;
+				}
+				return ActionUtils.EmbarkStatus.Embark;
+			}
+		}
+		if (targetTile.IsLand)
+		{
+			if (unit.UnitData.IsVehicle() && 
+				(!targetTile.IsWetland() || targetTile.HasImprovement(ImprovementData.Type.City)))
+			{
+				return ActionUtils.EmbarkStatus.Disembark;
+			}
+		}
+		return ActionUtils.EmbarkStatus.None;
+	}
+
     internal static int ComputeMovementCost(MapData map,
         TileData fromTile,
         TileData toTile,
@@ -39,6 +138,8 @@ public static class MovementHelper
             settings.unit.HasAbility("slide")))
             return MovementCost.GlideIce;
 
+        if (settings.unit.HasEffect(UnitEffect.Boosted) || settings.unit.HasEffect(UnitEffect.Swift))
+	        return MovementCost.Normal;
         return GetLandCost(toTile);
     }
 
