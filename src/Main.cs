@@ -8,7 +8,22 @@ public static class Main
     public static void Load()
     {
         PolyMod.Loader.AddPatchDataType("tileEffect", typeof(TileData.EffectType));
+        EnumCache<CommandType>.AddMapping("embarkcommand", (CommandType)1000);
         Harmony.CreateAndPatchAll(typeof(Main));
+    }
+
+    [HarmonyPrefix]
+    [HarmonyPatch(typeof(GameState), nameof(GameState.GetCommand))]
+    public static bool BaseCommand(ref CommandBase __result, CommandType type) 
+    {
+        if (type == EnumCache<CommandType>.GetType("embarkcommand"))
+        {
+	        if (!ClassInjector.IsTypeRegisteredInIl2Cpp<EmbarkCommand>()) 
+		        ClassInjector.RegisterTypeInIl2Cpp<EmbarkCommand>();            			
+            __result = new EmbarkCommand();
+            return false;
+        }
+        return true;
     }
 
     [HarmonyPrefix]
