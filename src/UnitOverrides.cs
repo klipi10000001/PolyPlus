@@ -83,4 +83,16 @@ public class UnitOverrides
         return false;
     }
 
+    [HarmonyPrefix]
+    [HarmonyPatch(typeof(CommandUtils), nameof(CommandUtils.GetUnitActions))]
+    public static bool GetUnitActions(
+        ref Il2CppSystem.Collections.Generic.List<CommandBase> __result,
+        GameState gameState,
+        PlayerState player,
+        TileData tile,
+        bool includeUnavailable)
+    {
+        __result = UnitHelper.AddUnitActions(gameState, player, tile, includeUnavailable);
+        return false;
+    }
 }
