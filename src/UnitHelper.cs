@@ -180,7 +180,7 @@ public static class UnitHelper
         {
             CommandUtils.AddCommand(gameState, list, new ClearTileEffectCommand(player.Id, unit.coordinates, TileData.EffectType.Algae), includeUnavailable);
         }
-        if (unit.CanActAndMove() && tile.HasEffect(TileData.EffectType.Flooded) && (unit.HasAbility(UnitAbility.Type.Amphibious) || !unit.HasAbility(UnitAbility.Type.Swim)))
+        if (unit.CanActOrMove() && tile.HasEffect(TileData.EffectType.Flooded) && (unit.HasAbility(UnitAbility.Type.Amphibious) || !unit.HasAbility(UnitAbility.Type.Swim)))
         {
             CommandUtils.AddCommand(gameState, list, new ClearTileEffectCommand(player.Id, unit.coordinates, TileData.EffectType.Flooded), includeUnavailable);
         }
