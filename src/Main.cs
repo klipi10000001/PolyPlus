@@ -10,6 +10,7 @@ public static class Main
         PolyMod.Loader.AddPatchDataType("tileEffect", typeof(TileData.EffectType));
         EnumCache<CommandType>.AddMapping("embarkcommand", (CommandType)1000);
         Harmony.CreateAndPatchAll(typeof(Main));
+        Harmony.CreateAndPatchAll(typeof(UnitOverrides));
     }
 
     [HarmonyPrefix]
@@ -108,13 +109,4 @@ public static class Main
         tile.improvement.baseScore += 50;
         tile.improvement.AddReward(CityReward.Park);
     }
-
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(UnitDataExtensions), nameof(UnitDataExtensions.GetDefenceBonus))]
-    private static bool UnitDataExtensions_GetDefenceBonus(ref int __result, UnitState unit, GameState gameState)
-    {
-        __result = DefenceHelper.ComputeDefenceBonus(unit, gameState);
-        return false;
-    }
-
 }
