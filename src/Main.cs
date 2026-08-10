@@ -109,4 +109,68 @@ public static class Main
         tile.improvement.baseScore += 50;
         tile.improvement.AddReward(CityReward.Park);
     }
+
+    private static ushort _founded;
+    private static ushort _changedFounded;
+    [HarmonyPrefix]
+    [HarmonyPatch(typeof(BuildAction), nameof(BuildAction.ExecuteDefault))]
+    public static bool BuildAction_ExecuteDefaultPre(BuildAction __instance, GameState gameState)
+    {
+        if (!gameState.GameLogicData.TryGetData(__instance.Type, out var improvementData))
+        {
+            return true;
+        }
+        var tile = gameState.Map.GetTile(__instance.Coordinates);
+        if (tile == null) return true;
+        if (ImprovementHelper.OverridableImprovement(tile, improvementData, gameState.GameLogicData) && improvementData.HasAbility(ImprovementAbility.Type.Patina))
+        {
+            var tileImprovement = tile.improvement;
+            var tileImprovementData = gameState.GameLogicData.GetImprovementData(tileImprovement.type);
+            if (tileImprovement.level >= tileImprovementData.maxLevel)
+            {
+                _founded = (ushort)(gameState.CurrentTurn - tileImprovementData.maxLevel * tileImprovementData.growthRate);
+            }
+            else _founded = tileImprovement.founded;
+            _changedFounded = 1;
+        }
+        
+        if (improvementData.HasAbility("mycrogrove"))
+        {
+            __instance.AddSubAction(new DestroyImprovementAction(__instance.PlayerId, __instance.Coordinates));
+            if (__instance.DeductCost && gameState.TryGetPlayer(__instance.PlayerId, out var playerState))
+            {
+                playerState.Currency -= improvementData.GetCurrencyCost();
+            }
+            __instance.AddSubAction(
+                new BuildAction(__instance.PlayerId,
+                    EnumCache<ImprovementData.Type>.GetType("mycrogrove"),
+                    __instance.Coordinates,
+                    false));
+            __instance.AddSubAction(UpdateImprovementAction.CreateUpgradeImprovementAction(__instance.PlayerId, tile));
+            __instance.CommitSubActionsToStack(gameState.ActionStack);
+            return false;
+        }
+        return true;
+    }
+    [HarmonyPostfix]
+    [HarmonyPatch(typeof(BuildAction), nameof(BuildAction.ExecuteDefault))]
+    public static void BuildAction_ExecuteDefaultPost(BuildAction __instance, GameState gameState)
+    {
+        var tile = gameState.Map.GetTile(__instance.Coordinates);
+        if (_changedFounded == 1) _changedFounded++;
+        else if (_changedFounded == 2)
+        {
+            var improvement = tile.improvement;
+            improvement.founded = _founded;
+            _changedFounded = 0;
+        }
+    }
+    
+    [HarmonyPrefix]
+    [HarmonyPatch(typeof(GameLogicData), nameof(GameLogicData.MeetsRequirement))]
+    public static bool MeetsRequirementsPatch(ref bool __result, GameLogicData __instance, TileData tile, ImprovementData improvement, PlayerState playerState, GameState gameState)
+    {
+        __result = ImprovementHelper.MeetsRequirement(__instance, tile, improvement, playerState, gameState);
+        return false;
+    }
 }
